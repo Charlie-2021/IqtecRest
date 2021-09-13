@@ -1,0 +1,70 @@
+package com.api.iqtec.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.api.iqtec.modelo.Cliente;
+import com.api.iqtec.repositorio.ClienteRepository;
+
+@Service
+public class ClienteService implements IClienteService {
+
+	
+	@Autowired ClienteRepository daoCliente;
+	
+	@Override
+	public List<Cliente> findAll() {
+		// TODO Auto-generated method stub
+		return (List<Cliente>) daoCliente.findAll();
+	}
+
+	@Override
+	public boolean insert(Cliente cliente) {
+		// TODO Auto-generated method stub
+		boolean exito = false;
+		
+		if(!daoCliente.existsById(cliente.getId()))
+		{
+			daoCliente.save(cliente);
+			exito = true;
+		}
+		return exito;
+	}
+
+	@Override
+	public boolean update(Cliente cliente) {
+		// TODO Auto-generated method stub
+		boolean exito = false;
+		
+		if(daoCliente.existsById(cliente.getId()))
+		{
+			daoCliente.save(cliente);
+			exito = true;
+		}
+		return exito;
+	}
+
+	@Override
+	public boolean delete(Long id) {
+		// TODO Auto-generated method stub
+		
+		boolean exito = false;
+
+		if(daoCliente.existsById(id))
+		{
+			daoCliente.deleteById(id);
+			exito = true;
+		}
+		return exito;
+	}
+
+	@Override
+	public Optional<Cliente> findByNombre(String nombre) {
+		// TODO Auto-generated method stub
+		return daoCliente.findByNombre(nombre);
+	}
+
+}
