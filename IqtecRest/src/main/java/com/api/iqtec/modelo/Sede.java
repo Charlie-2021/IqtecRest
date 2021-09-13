@@ -1,9 +1,8 @@
 package com.api.iqtec.modelo;
 
 import java.io.Serializable;
-import java.util.List;
 
-import javax.persistence.CascadeType;
+import javax.annotation.Generated;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -11,8 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.Email;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -21,8 +20,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.Singular;
-
 
 @Data
 @Builder
@@ -31,25 +28,22 @@ import lombok.Singular;
 @AllArgsConstructor
 
 @Entity
-public class Cliente implements Serializable{
+public class Sede implements Serializable {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -1776598221198292715L;
+	private static final long serialVersionUID = 8768639609132842613L;
 
-	
 	@Id
 	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(unique = true, name = "RAZON_SOCIAL")
+	@Column(unique = true)
 	@NonNull
 	@NotNull
 	private String nombre;
-	
-	private String cif;
 	
 	@Embedded
 	private Direccion direccion;
@@ -57,7 +51,5 @@ public class Cliente implements Serializable{
 	@Embedded
 	private Contacto contacto;
 	
-	@Singular
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-	private List<Sede> sedes;
+	
 }
