@@ -24,6 +24,10 @@ import com.api.iqtec.service.ITransporteService;
 @RequestMapping("/data")
 public class DataCharger {
 
+	
+	//COMENTARIO PARA FELIX
+	private String miString = "";
+	
 	@Autowired IClienteService clienteService;
 	
 	@Autowired ISedeService sedeService;
