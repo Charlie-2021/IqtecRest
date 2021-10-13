@@ -51,6 +51,8 @@ public class Cliente implements Serializable{
 	
 	private String cif;
 	
+	private String prueba;
+	
 	@Embedded
 	private Direccion direccion;
 	
