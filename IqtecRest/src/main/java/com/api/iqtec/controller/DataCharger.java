@@ -35,7 +35,6 @@ public class DataCharger {
 
 
 		Transporte trans1 = Transporte.builder()
-				.id(1l)
 				.nombre("GLS")
 				.cif("1215151D")
 				.direccion(Direccion.builder()
@@ -54,9 +53,10 @@ public class DataCharger {
 				.build();
 
 
-
+		
+		
+		
 		Cliente cli1 = Cliente.builder()
-				.idCliente(1l)
 				.razonSocial("KPMG SA")
 				.cif("123456A")
 				.direccion(Direccion.builder()
@@ -71,42 +71,9 @@ public class DataCharger {
 						.email("email1@gmail.com")
 						.telefono1("666333666")
 						.build())
-				.sede(Sede.builder()
-						.nombre("SEDE 1")
-						.direccion(Direccion.builder()
-								.calle("calle sede 1")
-								.cp("80653")
-								.poblacion("Barcelona")
-								.provincia("Barcelona")
-								.pais("España")
-								.build())
-						.listaContacto(Contacto.builder()
-								.nombre("maria")
-								.email("email3@gmail.com")
-								.telefono1("655655444")
-								.telefono2("91191123")
-								.build())
-						.build())
-				.sede(Sede.builder()
-						.nombre("SEDE 2")
-						.direccion(Direccion.builder()
-								.calle("calle sede 2")
-								.cp("45120")
-								.poblacion("valencia")
-								.provincia("valencia")
-								.pais("España")
-								.build())
-						.listaContacto(Contacto.builder()
-								.nombre("fernando")
-								.email("email4@gmail.com")
-								.telefono1("655655777")
-								.telefono2("91114123")
-								.build())
-						.build())
 				.build();
 
 		Cliente cli2 = Cliente.builder()
-				.idCliente(2l)
 				.razonSocial("EYEE SA")
 				.cif("123456B")
 				.direccion(Direccion.builder()
@@ -121,31 +88,75 @@ public class DataCharger {
 						.email("email2@gmail.com")
 						.telefono1("655655333")
 						.build())
-				.sede(Sede.builder()
-						.nombre("SEDE 3")
-						.direccion(Direccion.builder()
-								.calle("calle sede 3")
-								.cp("25981")
-								.poblacion("Toledo")
-								.provincia("Toledo")
-								.pais("España")
-								.build())
-						.listaContacto(Contacto.builder()
-								.nombre("jesus")
-								.email("email7@gmail.com")
-								.telefono1("65151515")
-								.telefono2("94502515")
-								.build())
-						.build())
 				.build();
 		
 		
+		Sede sede1 = Sede.builder()
+				.nombre("SEDE 1")
+				.direccion(Direccion.builder()
+						.calle("calle sede 1")
+						.cp("80653")
+						.poblacion("Barcelona")
+						.provincia("Barcelona")
+						.pais("España")
+						.build())
+				.listaContacto(Contacto.builder()
+						.nombre("maria")
+						.email("email3@gmail.com")
+						.telefono1("655655444")
+						.telefono2("91191123")
+						.build())
+				.cliente(cli1)
+				.build();
 
-		if (transporteService.insert(trans1))
-			return new ResponseEntity<String> ("datos cargados corecctamente", HttpStatus.CREATED);
+		Sede sede2 = Sede.builder()
+				.nombre("SEDE 2")
+				.direccion(Direccion.builder()
+						.calle("calle sede 2")
+						.cp("45120")
+						.poblacion("valencia")
+						.provincia("valencia")
+						.pais("España")
+						.build())
+				.listaContacto(Contacto.builder()
+						.nombre("fernando")
+						.email("email4@gmail.com")
+						.telefono1("655655777")
+						.telefono2("91114123")
+						.build())
+				.cliente(cli1)
+				.build();
+		
+		Sede sede3 = Sede.builder()
+				.nombre("SEDE 3")
+				.direccion(Direccion.builder()
+						.calle("calle sede 3")
+						.cp("25981")
+						.poblacion("Toledo")
+						.provincia("Toledo")
+						.pais("España")
+						.build())
+				.listaContacto(Contacto.builder()
+						.nombre("jesus")
+						.email("email7@gmail.com")
+						.telefono1("65151515")
+						.telefono2("94502515")
+						.build())
+				.cliente(cli2)
+				.build();
+		
+		
+//
+//		if (transporteService.insert(trans1) )
+//			return new ResponseEntity<String> ("datos cargados corecctamente", HttpStatus.CREATED);
 		
 		if (clienteService.insert(cli1) && clienteService.insert(cli2))
 			return new ResponseEntity<String> ("datos cargados corecctamente bien", HttpStatus.CREATED);
+		
+		if (sedeService.insert(sede1) && sedeService.insert(sede2) && sedeService.insert(sede3))
+			return new ResponseEntity<String> ("datos cargados corecctamente", HttpStatus.CREATED);
+		
+		
 
 		return new ResponseEntity<String> ("Error al cargar datos", HttpStatus.NOT_FOUND);
 	}

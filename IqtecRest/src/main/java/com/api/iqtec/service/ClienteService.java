@@ -26,7 +26,7 @@ public class ClienteService implements IClienteService {
 		// TODO Auto-generated method stub
 		boolean exito = false;
 		
-		if(!daoCliente.existsById(cliente.getIdCliente()))
+		if(cliente.getIdCliente() == null || !daoCliente.existsById(cliente.getIdCliente()))
 		{
 			daoCliente.save(cliente);
 			exito = true;

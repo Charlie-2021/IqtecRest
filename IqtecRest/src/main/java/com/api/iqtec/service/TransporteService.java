@@ -25,7 +25,7 @@ public class TransporteService implements ITransporteService {
 		// TODO Auto-generated method stub
 		boolean exito = false;
 		
-		if(!daoTransporte.existsById(transporte.getId()))
+		if(transporte.getId() == null ||!daoTransporte.existsById(transporte.getId()))
 		{
 			daoTransporte.save(transporte);
 			exito = true;
