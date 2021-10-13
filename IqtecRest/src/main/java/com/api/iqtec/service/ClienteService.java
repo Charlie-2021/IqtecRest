@@ -26,7 +26,7 @@ public class ClienteService implements IClienteService {
 		// TODO Auto-generated method stub
 		boolean exito = false;
 		
-		if(!daoCliente.existsById(cliente.getId()))
+		if(!daoCliente.existsById(cliente.getIdCliente()))
 		{
 			daoCliente.save(cliente);
 			exito = true;
@@ -39,7 +39,7 @@ public class ClienteService implements IClienteService {
 		// TODO Auto-generated method stub
 		boolean exito = false;
 		
-		if(daoCliente.existsById(cliente.getId()))
+		if(daoCliente.existsById(cliente.getIdCliente()))
 		{
 			daoCliente.save(cliente);
 			exito = true;
@@ -62,9 +62,9 @@ public class ClienteService implements IClienteService {
 	}
 
 	@Override
-	public Optional<Cliente> findByNombre(String nombre) {
+	public Optional<Cliente> findByNombre(String razonSocial) {
 		// TODO Auto-generated method stub
-		return daoCliente.findByNombre(nombre);
+		return daoCliente.findByRazonSocial(razonSocial);
 	}
 
 }

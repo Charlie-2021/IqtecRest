@@ -66,11 +66,14 @@ public class Cliente implements Serializable{
 	private String cif;
 	
 
+
 	private String prueba;
 	
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "ID_DIRECCION")
+
+	@Embedded
 	private Direccion direccion;
 	
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
