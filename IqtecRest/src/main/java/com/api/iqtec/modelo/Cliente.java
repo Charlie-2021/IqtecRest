@@ -1,7 +1,11 @@
 package com.api.iqtec.modelo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,9 +15,15 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,6 +32,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Singular;
+import lombok.ToString;
 
 
 @Data
@@ -31,6 +42,7 @@ import lombok.Singular;
 @AllArgsConstructor
 
 @Entity
+@Table(name = "CLIENTE")
 public class Cliente implements Serializable{
 
 	/**
@@ -42,24 +54,33 @@ public class Cliente implements Serializable{
 	@Id
 	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@Column(name = "ID_CLIENTE")
+	private Long idCliente;
 	
-	@Column(unique = true, name = "RAZON_SOCIAL")
+	@Column(unique = true, name = "RAZON_SOCIAL", length = 50)
 	@NonNull
 	@NotNull
-	private String nombre;
+	private String razonSocial;
 	
+	@Column(name = "CIF", length = 10)
 	private String cif;
 	
+
 	private String prueba;
 	
-	@Embedded
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "ID_DIRECCION")
 	private Direccion direccion;
 	
-	@Embedded
-	private Contacto contacto;
-	
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "ID_CONTACTO", nullable = true)
 	@Singular
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-	private List<Sede> sedes;
+	private List<Contacto> listaContactos;
+	
+
+	@OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@Singular
+	private Set<Sede> sedes;
+	
 }
