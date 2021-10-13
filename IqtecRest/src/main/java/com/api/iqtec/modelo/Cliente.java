@@ -65,11 +65,6 @@ public class Cliente implements Serializable{
 	@Column(name = "CIF", length = 10)
 	private String cif;
 	
-
-
-	private String prueba;
-	
-
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "ID_DIRECCION")
 
