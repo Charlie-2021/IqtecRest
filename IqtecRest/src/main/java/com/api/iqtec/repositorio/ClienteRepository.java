@@ -10,5 +10,6 @@ import com.api.iqtec.modelo.Cliente;
 @Repository
 public interface ClienteRepository extends CrudRepository<Cliente, Long> {
 
+
 	public Optional<Cliente> findByRazonSocial (String razonSocial);
 }

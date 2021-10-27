@@ -1,5 +1,7 @@
 package com.api.iqtec.controller;
 
+import java.util.ArrayList;
+
 import javax.validation.Valid;
 
 import org.hibernate.mapping.Set;
@@ -52,7 +54,7 @@ public class DataCharger {
 						.build())
 				.build();
 
-
+		
 		
 		
 		
@@ -85,6 +87,16 @@ public class DataCharger {
 						.build())
 				.listaContacto(Contacto.builder()
 						.nombre("felipe")
+						.email("email2@gmail.com")
+						.telefono1("655655333")
+						.build())
+				.listaContacto(Contacto.builder()
+						.nombre("jose")
+						.email("email2@gmail.com")
+						.telefono1("655655333")
+						.build())
+				.listaContacto(Contacto.builder()
+						.nombre("javier")
 						.email("email2@gmail.com")
 						.telefono1("655655333")
 						.build())
@@ -146,15 +158,16 @@ public class DataCharger {
 				.build();
 		
 		
-//
-//		if (transporteService.insert(trans1) )
-//			return new ResponseEntity<String> ("datos cargados corecctamente", HttpStatus.CREATED);
-		
-		if (clienteService.insert(cli1) && clienteService.insert(cli2))
-			return new ResponseEntity<String> ("datos cargados corecctamente bien", HttpStatus.CREATED);
-		
-		if (sedeService.insert(sede1) && sedeService.insert(sede2) && sedeService.insert(sede3))
+
+		if (transporteService.insert(trans1) && clienteService.insert(cli1) && clienteService.insert(cli2) &&
+				sedeService.insert(sede1) && sedeService.insert(sede2) && sedeService.insert(sede3))
 			return new ResponseEntity<String> ("datos cargados corecctamente", HttpStatus.CREATED);
+//		
+//		if (clienteService.insert(cli1) && clienteService.insert(cli2))
+//			return new ResponseEntity<String> ("datos cargados corecctamente bien", HttpStatus.CREATED);
+//		
+//		if (sedeService.insert(sede1) && sedeService.insert(sede2) && sedeService.insert(sede3))
+//			return new ResponseEntity<String> ("datos cargados corecctamente", HttpStatus.CREATED);
 		
 		
 

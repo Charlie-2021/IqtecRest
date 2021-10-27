@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -56,12 +57,16 @@ public class Transporte implements Serializable{
 	@NotNull
 	private String cif;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "ID_DIRECCION")
+	@Embedded
 	private Direccion direccion;
 	
-	@OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinTable 
+	  ( 
+	      name = "TRANSPORTE_CONTACTO" , 
+	      joinColumns = {  @JoinColumn ( name = "ID_TRANSPORTE" ,  referencedColumnName = "ID_TRANSPORTE" )  }, 
+	      inverseJoinColumns = {  @JoinColumn ( name = "ID_CONTACTO" , referencedColumnName = "ID_CONTACTO" ,  unique = true )  } 
+	  ) 
 	@Singular
-	@JoinColumn(name = "ID_CONTACTO", nullable = true)
 	private List<Contacto> listaContactos;
 }

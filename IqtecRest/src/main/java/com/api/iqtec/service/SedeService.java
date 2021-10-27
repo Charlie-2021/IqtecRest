@@ -25,7 +25,7 @@ public class SedeService implements ISedeService {
 		// TODO Auto-generated method stub
 		boolean exito = false;
 		
-		if(sede.getId() == null || !daoSede.existsById(sede.getId()))
+		if(sede.getIdSede() == null || !daoSede.existsById(sede.getIdSede()))
 		{
 			daoSede.save(sede);
 			exito = true;
@@ -38,7 +38,7 @@ public class SedeService implements ISedeService {
 		// TODO Auto-generated method stub
 		boolean exito = false;
 		
-		if(daoSede.existsById(sede.getId()))
+		if(daoSede.existsById(sede.getIdSede()))
 		{
 			daoSede.save(sede);
 			exito = true;

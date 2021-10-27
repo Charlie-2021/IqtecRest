@@ -1,5 +1,7 @@
 package com.api.iqtec.modelo;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
@@ -21,42 +23,24 @@ import lombok.NonNull;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 
-@Entity
-@Table(name = "DIRECCION")
+@Embeddable
 public class Direccion {
 
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@EqualsAndHashCode.Include
-	@Column(name = "ID_DIRECCION")
-	private Long idDrireccion;
-	
-	@NonNull
-	@NotNull
-	@Column(name = "CALLE", length =200, nullable = false)
+	@Column(name = "CALLE", length =200)
 	private String calle;
 	
-	@NonNull
-	@NotNull
-	@Column(name = "CODIGO_POSTAL", length =25, nullable = false)
+	@Column(name = "CODIGO_POSTAL", length =25)
 	private String cp;
 	
-	@NonNull
-	@NotNull
-	@Column(name = "LOCALIDAD", length =200, nullable = false)
+	@Column(name = "LOCALIDAD", length =200)
 	private String poblacion;
 	
-	@NonNull
-	@NotNull
-	@Column(name = "PROVINCIA", length =200, nullable = false)
+	@Column(name = "PROVINCIA", length =200)
 	private String provincia;
 	
-	@NonNull
-	@NotNull
-	@Column(name = "PAIS", length =100, nullable = false)
+	@Column(name = "PAIS", length =100)
 	private String pais;
 	
 	

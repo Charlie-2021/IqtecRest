@@ -50,19 +50,23 @@ public class Sede implements Serializable {
 	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID_SEDE")
-	private Long id;
+	private Long idSede;
 	
 	@Column(unique = true, name = "NOMBRE")
 	@NonNull
 	@NotNull
 	private String nombre;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "ID_DIRECCION")
+	@Embedded
 	private Direccion direccion;
 	
-	@OneToMany(orphanRemoval = true, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "ID_CONTACTO", nullable = true)
+	 @OneToMany(cascade = CascadeType.ALL)
+	 @JoinTable 
+	  ( 
+	      name = "SEDE_CONTACTO" , 
+	      joinColumns = {  @JoinColumn ( name = "ID_SEDE" ,  referencedColumnName = "ID_SEDE" )  }, 
+	      inverseJoinColumns = {  @JoinColumn ( name = "ID_CONTACTO" , referencedColumnName = "ID_CONTACTO" ,  unique = true )  } 
+	  ) 
 	@Singular
 	private List<Contacto> listaContactos;
 	

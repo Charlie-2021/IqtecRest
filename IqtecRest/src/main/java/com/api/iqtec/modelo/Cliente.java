@@ -4,12 +4,14 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -53,12 +55,16 @@ public class Cliente implements Serializable{
 	@Column(name = "CIF", length = 10)
 	private String cif;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "ID_DIRECCION")
+	@Embedded
 	private Direccion direccion;
 	
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "ID_CONTACTO", nullable = true)
+	 @OneToMany(cascade = CascadeType.ALL)
+	 @JoinTable 
+	  ( 
+	      name = "CLIENTE_CONTACTO" , 
+	      joinColumns = {  @JoinColumn ( name = "ID_CLIENTE" ,  referencedColumnName = "ID_CLIENTE" )  }, 
+	      inverseJoinColumns = {  @JoinColumn ( name = "ID_CONTACTO" , referencedColumnName = "ID_CONTACTO" ,  unique = true )  } 
+	  ) 
 	@Singular
 	private List<Contacto> listaContactos;
 	
