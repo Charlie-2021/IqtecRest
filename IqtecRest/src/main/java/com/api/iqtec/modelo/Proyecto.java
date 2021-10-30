@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 
 @Entity
-@Table(name = "PROYECTO")
+@Table(name = "PROYECTOS")
 public class Proyecto implements Serializable{
 
 	/**
@@ -39,9 +39,12 @@ public class Proyecto implements Serializable{
 	@Column(name = "ID_PROYECTO")
 	private Long idProyecto;
 	
-	@Column(name = "NOMBRE", unique = true)
+	@Column(name = "NOMBRE", unique = true, length = 25)
 	@NotNull
 	private String nombre;
+	
+	@Column(name = "DESCRIPCION")
+	private String descripcion;
 	
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "ID_CLIENTE")

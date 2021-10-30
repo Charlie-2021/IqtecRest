@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 
 @Entity
-@Table(name = "MATERIAL")
+@Table(name = "MATERIALES")
 public class Material implements Serializable {
 
 	

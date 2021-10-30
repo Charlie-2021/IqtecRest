@@ -32,7 +32,7 @@ import lombok.Singular;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "CLIENTE")
+@Table(name = "CLIENTES")
 public class Cliente implements Serializable{
 
 	/**

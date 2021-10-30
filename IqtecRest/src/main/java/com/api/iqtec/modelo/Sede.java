@@ -38,7 +38,7 @@ import lombok.Singular;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "SEDE")
+@Table(name = "SEDES")
 public class Sede implements Serializable {
 
 	/**
@@ -52,10 +52,16 @@ public class Sede implements Serializable {
 	@Column(name = "ID_SEDE")
 	private Long idSede;
 	
-	@Column(unique = true, name = "NOMBRE")
+	@Column(unique = true, name = "NOMBRE", length = 50)
 	@NonNull
 	@NotNull
 	private String nombre;
+	
+	@Column(unique = true, name = "CIF", length = 25)
+	@NonNull
+	@NotNull
+	private String cif;
+	
 	
 	@Embedded
 	private Direccion direccion;

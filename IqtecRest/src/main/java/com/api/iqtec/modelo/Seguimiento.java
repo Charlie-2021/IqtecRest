@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "SEGUIMIENTO")
+@Table(name = "SEGUIMIENTOS")
 public class Seguimiento implements Serializable{
 
 	/**

@@ -1,5 +1,7 @@
 package com.api.iqtec.controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import javax.validation.Valid;
@@ -16,10 +18,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.api.iqtec.modelo.Cliente;
 import com.api.iqtec.modelo.Contacto;
 import com.api.iqtec.modelo.Direccion;
+import com.api.iqtec.modelo.Estado;
+import com.api.iqtec.modelo.Instrucciones;
+import com.api.iqtec.modelo.Material;
+import com.api.iqtec.modelo.Proyecto;
 import com.api.iqtec.modelo.Sede;
+import com.api.iqtec.modelo.Seguimiento;
+import com.api.iqtec.modelo.Solicitud;
 import com.api.iqtec.modelo.Transporte;
 import com.api.iqtec.service.IClienteService;
+import com.api.iqtec.service.IProyectoService;
 import com.api.iqtec.service.ISedeService;
+import com.api.iqtec.service.ISolicitudService;
 import com.api.iqtec.service.ITransporteService;
 
 @RestController
@@ -32,6 +42,10 @@ public class DataCharger {
 	
 	@Autowired ITransporteService transporteService;
 
+	@Autowired IProyectoService proyectoService;
+	
+	@Autowired ISolicitudService solicitudService;
+	
 	@PostMapping("/crear")
 	public ResponseEntity<String> datos (){
 
@@ -105,6 +119,7 @@ public class DataCharger {
 		
 		Sede sede1 = Sede.builder()
 				.nombre("SEDE 1")
+				.cif("2A15415")
 				.direccion(Direccion.builder()
 						.calle("calle sede 1")
 						.cp("80653")
@@ -123,6 +138,7 @@ public class DataCharger {
 
 		Sede sede2 = Sede.builder()
 				.nombre("SEDE 2")
+				.cif("2A158748")
 				.direccion(Direccion.builder()
 						.calle("calle sede 2")
 						.cp("45120")
@@ -141,6 +157,7 @@ public class DataCharger {
 		
 		Sede sede3 = Sede.builder()
 				.nombre("SEDE 3")
+				.cif("255151415")
 				.direccion(Direccion.builder()
 						.calle("calle sede 3")
 						.cp("25981")
@@ -157,10 +174,50 @@ public class DataCharger {
 				.cliente(cli2)
 				.build();
 		
+		Proyecto proyecto = Proyecto.builder()
+				.nombre("PROYECTO 1")
+				.cliente(cli1)
+				.descripcion("BREVE DESCRIPCION")
+				.build();
+				
+		Solicitud solicitud = Solicitud.builder()
+				.referencia("Solicitud 1")
+				.fechaRecogida(LocalDate.now().toString())
+				.horario("09:00")
+				.comentTransporte("comentario para el transporte")
+				.estado(Estado.SOLICITADO)
+				.proyecto(proyecto)
+				.sede(sede3)
+				.transporte(trans1)
+				.seguimiento(Seguimiento.builder()
+						.fechaCreacion(LocalDateTime.now())
+						.build())
+				.instrucciones(Instrucciones.builder()
+						.comentInventario("COMENTARIO INVENTARIO")
+						.destruir(false)
+						.degauss(false)
+						.pesarReciclaje(false)
+						.separarReciclaje(true)
+						.reciclarTodo(false)
+						.observaciones("por si hubiera algo que añadir")
+						.build())
+				.material(Material.builder()
+						.pc(100)
+						.portatil(200)
+						.hdd(0)
+						.servidor(5)
+						.telefonos(150)
+						.tablet(0)
+						.tft(23)
+						.impresora(0)
+						.cajaVarios(2)
+						.build())
+				.build();
 		
 
 		if (transporteService.insert(trans1) && clienteService.insert(cli1) && clienteService.insert(cli2) &&
-				sedeService.insert(sede1) && sedeService.insert(sede2) && sedeService.insert(sede3))
+				sedeService.insert(sede1) && sedeService.insert(sede2) && sedeService.insert(sede3) && 
+				proyectoService.insert(proyecto) && solicitudService.insert(solicitud))
 			return new ResponseEntity<String> ("datos cargados corecctamente", HttpStatus.CREATED);
 //		
 //		if (clienteService.insert(cli1) && clienteService.insert(cli2))

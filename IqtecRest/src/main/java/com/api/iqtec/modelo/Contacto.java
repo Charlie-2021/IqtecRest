@@ -27,7 +27,7 @@ import lombok.NonNull;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 
 @Entity
-@Table(name = "CONTACTO")
+@Table(name = "CONTACTOS")
 public class Contacto implements Serializable {
 
 	/**

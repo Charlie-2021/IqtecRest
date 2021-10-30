@@ -33,7 +33,7 @@ import lombok.Singular;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "TRANSPORTE")
+@Table(name = "TRANSPORTES")
 public class Transporte implements Serializable{
 
 	/**
@@ -52,7 +52,7 @@ public class Transporte implements Serializable{
 	@NotNull
 	private String nombre;
 	
-	@Column(name = "CIF", length = 10, nullable = false)
+	@Column(name = "CIF", length = 20, nullable = false)
 	@NonNull
 	@NotNull
 	private String cif;

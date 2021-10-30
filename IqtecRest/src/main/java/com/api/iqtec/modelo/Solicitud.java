@@ -31,7 +31,7 @@ import lombok.NonNull;
 @Builder
 
 @Entity
-@Table(name = "SOLICUTUD")
+@Table(name = "SOLICUTUDES")
 public class Solicitud implements Serializable {
 
 	/**
@@ -75,6 +75,7 @@ public class Solicitud implements Serializable {
 	private Proyecto proyecto;
 	
 	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	@JoinColumn(name = "ID_SEDE")
 	@NotNull
 	private Sede sede;
 	
