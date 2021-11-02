@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import com.api.iqtec.security.dto.JwtDto;
+import com.api.iqtec.security.dto.NuevoUsuario;
 import com.api.iqtec.security.entity.Rol;
 import com.api.iqtec.security.entity.Usuario;
 import com.api.iqtec.security.enums.RolNombre;
@@ -41,13 +42,13 @@ public class AuthController {
     @Autowired JwtProvider jwtProvider;
 
     @PostMapping("/nuevo")
-    public ResponseEntity<Usuario> nuevo(@Valid @RequestBody Usuario nuevoUsuario, BindingResult bindingResult){
+    public ResponseEntity<String> nuevo(@Valid @RequestBody NuevoUsuario nuevoUsuario, BindingResult bindingResult){
     	
         if(bindingResult.hasErrors())
-            return new ResponseEntity<Usuario>(nuevoUsuario, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>(bindingResult.getAllErrors().toString(), HttpStatus.BAD_REQUEST);
         
         if(usuarioService.existsByNombreUsuario(nuevoUsuario.getNombreUsuario()))
-            return new ResponseEntity<Usuario>( nuevoUsuario, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>( "EL NOMBRE DE USUARIO YA EXISTE", HttpStatus.BAD_REQUEST);
         
   
         
@@ -55,16 +56,16 @@ public class AuthController {
         
         Set<Rol> roles = new HashSet<>();
         
-        roles.add(rolService.getByRolNombre(RolNombre.ROLE_USER).get());
+        roles.add(rolService.getByRolNombre(RolNombre.TECNICO).get());
         
-        if(nuevoUsuario.getRoles().contains("admin"))
-            roles.add(rolService.getByRolNombre(RolNombre.ROLE_ADMIN).get());
+        if(nuevoUsuario.getRoles().contains("ADMINISTRADOR"))
+            roles.add(rolService.getByRolNombre(RolNombre.ADMINISTRADOR).get());
         
         usuario.setRoles(roles);
         
         usuarioService.insert(usuario);
         
-        return new ResponseEntity<Usuario>(usuario, HttpStatus.CREATED);
+        return new ResponseEntity<String>("USUARIO CREADO CORRECTAMENTE", HttpStatus.CREATED);
     }
 
     

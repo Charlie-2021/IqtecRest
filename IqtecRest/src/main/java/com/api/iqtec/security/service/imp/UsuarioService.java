@@ -30,7 +30,7 @@ public class UsuarioService implements IUsuarioService {
 		// TODO Auto-generated method stub
 		boolean exito = false;
 		
-		if(!daoUsuario.existsById(usuario.getId()))
+		if(usuario.getId() == null || !daoUsuario.existsById(usuario.getId()))
 		{
 			daoUsuario.save(usuario);
 			exito = true;
