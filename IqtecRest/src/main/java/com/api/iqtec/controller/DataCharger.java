@@ -3,13 +3,17 @@ package com.api.iqtec.controller;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 
-import org.hibernate.mapping.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,11 +29,21 @@ import com.api.iqtec.modelo.Proyecto;
 import com.api.iqtec.modelo.Sede;
 import com.api.iqtec.modelo.Seguimiento;
 import com.api.iqtec.modelo.Solicitud;
+import com.api.iqtec.modelo.Tipo;
 import com.api.iqtec.modelo.Transporte;
+import com.api.iqtec.modelo.enums.NombreEstado;
+import com.api.iqtec.modelo.enums.TipoMaterial;
+import com.api.iqtec.security.entity.Rol;
+import com.api.iqtec.security.entity.Usuario;
+import com.api.iqtec.security.enums.RolNombre;
+import com.api.iqtec.security.service.interfaces.IUsuarioService;
+import com.api.iqtec.security.service.interfaces.IntRolService;
 import com.api.iqtec.service.IClienteService;
+import com.api.iqtec.service.IEstadoService;
 import com.api.iqtec.service.IProyectoService;
 import com.api.iqtec.service.ISedeService;
 import com.api.iqtec.service.ISolicitudService;
+import com.api.iqtec.service.ITipoService;
 import com.api.iqtec.service.ITransporteService;
 
 @RestController
@@ -46,10 +60,50 @@ public class DataCharger {
 	
 	@Autowired ISolicitudService solicitudService;
 	
+	@Autowired ITipoService tipoService;
+	
+	@Autowired IntRolService rolService;
+	
+	@Autowired IUsuarioService usuarioService;
+	
+	@Autowired PasswordEncoder passwordEncoder;
+	
+	@Autowired IEstadoService estadoService;
+	
 	@PostMapping("/crear")
 	public ResponseEntity<String> datos (){
 
 
+		Rol rolAdmnid = new Rol(null, RolNombre.ADMINISTRADOR);	
+		Rol rolTecnico = new Rol(null, RolNombre.TECNICO);
+		
+		Usuario userAdmin = new Usuario("admin", passwordEncoder.encode("admin"));
+		Usuario userTecnico = new Usuario("tecnico", passwordEncoder.encode("tecnico"));
+		
+		Set<Rol> roles = new HashSet();
+		roles.add(rolAdmnid);
+		userAdmin.setRoles(roles);
+		
+		Estado solicitado = Estado.builder().nombreEstado(NombreEstado.SOLICITADO).build();
+		Estado recibido = Estado.builder().nombreEstado(NombreEstado.RECIBIDO).build();
+		Estado produccion = Estado.builder().nombreEstado(NombreEstado.PRODUCCION).build();
+		Estado procesado = Estado.builder().nombreEstado(NombreEstado.PROCESADO).build();
+		Estado informe = Estado.builder().nombreEstado(NombreEstado.INFORME).build();
+		Estado finalizado = Estado.builder().nombreEstado(NombreEstado.FINALIZADO).build();
+		
+		Tipo tipo1 = Tipo.builder().tipoMaterial(TipoMaterial.HDD).build();
+		Tipo tipo2 = Tipo.builder().tipoMaterial(TipoMaterial.CAJA_VARIOS).build();
+		Tipo tipo3 = Tipo.builder().tipoMaterial(TipoMaterial.IMPRESORA).build();
+		Tipo tipo4 = Tipo.builder().tipoMaterial(TipoMaterial.PC).build();
+		Tipo tipo5 = Tipo.builder().tipoMaterial(TipoMaterial.PORTATIL).build();
+		Tipo tipo6 = Tipo.builder().tipoMaterial(TipoMaterial.SERVIDOR).build();
+		Tipo tipo7 = Tipo.builder().tipoMaterial(TipoMaterial.TABLET).build();
+		Tipo tipo8 = Tipo.builder().tipoMaterial(TipoMaterial.TELEFONO).build();
+		Tipo tipo9 = Tipo.builder().tipoMaterial(TipoMaterial.TFT).build();
+
+		
+		
+		
 		Transporte trans1 = Transporte.builder()
 				.nombre("GLS")
 				.cif("1215151D")
@@ -68,7 +122,24 @@ public class DataCharger {
 						.build())
 				.build();
 
-		
+		Transporte trans2 = Transporte.builder()
+				.nombre("HTM")
+				.cif("hbvvjb")
+				.direccion(Direccion.builder()
+						.calle("calle transporte 2")
+						.cp("28807")
+						.poblacion("parla")
+						.provincia("madrid")
+						.pais("España")
+						.build())
+				.listaContacto(Contacto.builder()
+						.nombre("juan")
+						.email("email6@gmail.com")
+						.telefono1("654789213")
+						.telefono2("911515151")
+						.build())
+				.build();
+
 		
 		
 		
@@ -185,12 +256,13 @@ public class DataCharger {
 				.fechaRecogida(LocalDate.now().toString())
 				.horario("09:00")
 				.comentTransporte("comentario para el transporte")
-				.estado(Estado.SOLICITADO)
 				.proyecto(proyecto)
 				.sede(sede3)
 				.transporte(trans1)
 				.seguimiento(Seguimiento.builder()
-						.fechaCreacion(LocalDateTime.now())
+						.estado(recibido)
+						.fecha(LocalDateTime.now())
+						.usuario(userAdmin)
 						.build())
 				.instrucciones(Instrucciones.builder()
 						.comentInventario("COMENTARIO INVENTARIO")
@@ -201,23 +273,79 @@ public class DataCharger {
 						.reciclarTodo(false)
 						.observaciones("por si hubiera algo que añadir")
 						.build())
-				.material(Material.builder()
-						.pc(100)
-						.portatil(200)
-						.hdd(0)
-						.servidor(5)
-						.telefonos(150)
-						.tablet(0)
-						.tft(23)
-						.impresora(0)
-						.cajaVarios(2)
+				.materiale(Material.builder()
+						.tipo(tipo1)
+						.cantidad(10)
+						.build())
+				.materiale(Material.builder()
+						.tipo(tipo2)
+						.cantidad(100)
+						.build())
+				.materiale(Material.builder()
+						.tipo(tipo3)
+						.cantidad(45)
+						.build())
+				.materiale(Material.builder()
+						.tipo(tipo4)
+						.cantidad(98)
 						.build())
 				.build();
 		
+		Solicitud solicitud2 = Solicitud.builder()
+				.referencia("Solicitud 2")
+				.fechaRecogida(LocalDate.now().toString())
+				.horario("19:00")
+				.comentTransporte("comentario para el transporte 2")
+				.sede(sede1)
+				.transporte(trans1)
+				.seguimiento(Seguimiento.builder()
+						.estado(recibido)
+						.fecha(LocalDateTime.now())
+						.usuario(userAdmin)
+						.build())
+				.instrucciones(Instrucciones.builder()
+						.comentInventario("COMENTARIO INVENTARIO")
+						.destruir(false)
+						.degauss(false)
+						.pesarReciclaje(false)
+						.separarReciclaje(true)
+						.reciclarTodo(false)
+						.observaciones("por si hubiera algo que añadir")
+						.build())
+				.materiales(Arrays.asList(
+									Material.builder().tipo(tipo2).cantidad(107).build(),
+									Material.builder().tipo(tipo1).cantidad(30).build(),
+									Material.builder().tipo(tipo7).cantidad(25).build(),
+									Material.builder().tipo(tipo3).cantidad(18).build()))
+				.build();
+		
+		
+		tipoService.save(tipo1);
+		tipoService.save(tipo2);
+		tipoService.save(tipo3);
+		tipoService.save(tipo4);
+		tipoService.save(tipo5);
+		tipoService.save(tipo6);
+		tipoService.save(tipo7);
+		tipoService.save(tipo8);
+		tipoService.save(tipo9);
+		
+		rolService.save(rolAdmnid);
+		rolService.save(rolTecnico);
+		
+		usuarioService.insert(userTecnico);
+		usuarioService.insert(userAdmin);
+		
+		estadoService.save(solicitado);
+		estadoService.save(recibido);
+		estadoService.save(produccion);
+		estadoService.save(procesado);
+		estadoService.save(informe);
+		estadoService.save(finalizado);
 
-		if (transporteService.insert(trans1) && clienteService.insert(cli1) && clienteService.insert(cli2) &&
+		if (transporteService.insert(trans1) && transporteService.insert(trans2) && clienteService.insert(cli1) && clienteService.insert(cli2) &&
 				sedeService.insert(sede1) && sedeService.insert(sede2) && sedeService.insert(sede3) && 
-				proyectoService.insert(proyecto) && solicitudService.insert(solicitud))
+				proyectoService.insert(proyecto) && solicitudService.insert(solicitud) && solicitudService.insert(solicitud2))
 			return new ResponseEntity<String> ("datos cargados corecctamente", HttpStatus.CREATED);
 //		
 //		if (clienteService.insert(cli1) && clienteService.insert(cli2))

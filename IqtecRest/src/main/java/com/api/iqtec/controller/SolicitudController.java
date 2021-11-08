@@ -21,15 +21,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.api.iqtec.modelo.Cliente;
 import com.api.iqtec.modelo.Solicitud;
 import com.api.iqtec.service.ISolicitudService;
+import com.api.iqtec.service.ITipoService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/Iqtec")
+@RequestMapping("/Iqtec/solicitud")
 public class SolicitudController {
 	
 	@Autowired ISolicitudService solicitudService;
+	@Autowired ITipoService tipoServices;
 	
-	@PostMapping("/solicitud/crear")
+	@PostMapping("/crear")
 	public ResponseEntity<Solicitud> insertarSolicitud (@Valid @RequestBody Solicitud solicitud)
 	{
 		
@@ -43,7 +45,7 @@ public class SolicitudController {
 	}
 	
 	
-	@GetMapping ("/solicitud/consultar")
+	@GetMapping ("/consultar")
 	public ResponseEntity<List<Solicitud>> obtenerTodasSolicitudes ()
 	{
 		ResponseEntity<List<Solicitud>> response;
@@ -57,7 +59,7 @@ public class SolicitudController {
 		return response;
 	}
 	
-	@PutMapping ("/solicitud/actualizar")
+	@PutMapping ("/actualizar")
 	public ResponseEntity<Solicitud> modificarSolicitud (@Valid @RequestBody Solicitud solicitud)
 	{
 		
@@ -70,7 +72,7 @@ public class SolicitudController {
 		return new ResponseEntity<>(solicitud,status);
 	}
 	
-	@DeleteMapping ("/solicitud/eliminar/{id}")
+	@DeleteMapping ("/eliminar/{id}")
 	public ResponseEntity<Long> eliminarSolicitud (@PathVariable Long id)
 	{
 		HttpStatus status = HttpStatus.OK;
@@ -83,7 +85,7 @@ public class SolicitudController {
 		
 	}
 	
-	@GetMapping("/solicitud/porReferencia/{referencia}")
+	@GetMapping("/porReferencia/{referencia}")
 	public ResponseEntity<Solicitud> findByReferencia(@PathVariable String referencia)
 	{
 		

@@ -3,12 +3,20 @@ package com.api.iqtec.modelo;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import com.api.iqtec.security.entity.Usuario;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,11 +45,20 @@ public class Seguimiento implements Serializable{
 	@Column(name = "ID_SEGUIMIENTO")
 	private Long idSeguimiento;
 	
-	private LocalDateTime fechaCreacion;
-	private LocalDateTime fechaRecibido;
-	private LocalDateTime fechaProduccion;
-	private LocalDateTime fechaProcesado;
-	private LocalDateTime fechaInforme;
-	private LocalDateTime fechaFinalizado;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "ID_ESTADO")
+	@NotNull
+	private Estado estado;
+	
+	@Column(name = "FECHA")
+	private LocalDateTime fecha;
 
+	@OneToOne
+	@JoinColumn(name = "ID_USUARIO")
+	private Usuario usuario;
+	
+	
+	
+	
+	
 }

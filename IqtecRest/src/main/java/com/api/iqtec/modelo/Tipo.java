@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.api.iqtec.modelo.enums.NombreEstado;
+import com.api.iqtec.modelo.enums.TipoMaterial;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,19 +24,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 
 @Entity
-@Table(name = "ESTADOS")
-public class Estado {
-	
+@Table(name = "TIPOS")
+public class Tipo {
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy =GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
-	@Column(name = "ID_ESTADO")
-	private Long idEstado;
-	
+	@Column(name = "ID_TIPO")
+	private Long idTipo;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "NOMBRE_ESTADO", unique = true)
+	@Column(name = "TIPO_MATERIAL", unique = true)
 	@EqualsAndHashCode.Include
-	private NombreEstado nombreEstado;
-
+	private TipoMaterial tipoMaterial;
 }

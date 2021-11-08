@@ -4,10 +4,15 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,35 +42,14 @@ public class Material implements Serializable {
 	@EqualsAndHashCode.Include
 	private Long idMaterial;
 	
-	@Column(name = "PC")
-	private int pc;
+	@OneToOne
+	@JoinColumn(name = "ID_TIPO")
+	@NotNull
+	private Tipo tipo;
 	
-	@Column(name = "PORTATIL")
-	private int portatil;
-	
-	@Column(name = "HDD")
-	private int hdd;
-	
-	@Column(name = "SERVIDOR")
-	private int servidor;
-	
-	@Column(name = "TELEFONOS")
-	private int telefonos;
-	
-	@Column(name = "TABLET")
-	private int tablet;
-	
-	@Column(name = "TFT")
-	private int tft;
-	
-	@Column(name = "IMPRESORA")
-	private int impresora;
-
-	@Column(name = "CAJA_VARIOS")
-	private int cajaVarios;
-	
-	@Column(name = "MATERIAL_EXTRA")
-	private String extra;
+	@NotNull
+	@Column(name = "CANTIDAD")
+	private int cantidad;
 	
 	
 }

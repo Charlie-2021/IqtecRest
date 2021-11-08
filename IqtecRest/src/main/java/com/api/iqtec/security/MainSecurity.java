@@ -58,22 +58,22 @@ public class MainSecurity extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		
+
 		// TODO Auto-generated method stub
 		http.cors().and().csrf().disable()
-				.authorizeRequests()
-				.antMatchers("/auth/**").permitAll()
-				.antMatchers("/data/**").permitAll()
-//				.antMatchers("/Iqtec/**").permitAll()
-				.anyRequest().authenticated()
-				.and()
-				.exceptionHandling().authenticationEntryPoint(jwtEntryPoint)
-				.and()
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		
+		.authorizeRequests()
+		.antMatchers("/auth/**").permitAll()
+		.antMatchers("/data/**").permitAll()
+//		.antMatchers("/Iqtec/**").permitAll()
+		.anyRequest().authenticated()
+		.and()
+		.exceptionHandling().authenticationEntryPoint(jwtEntryPoint)
+		.and()
+		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
 		http.addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
 
-	
+
 
 }

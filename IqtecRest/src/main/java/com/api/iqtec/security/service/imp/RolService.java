@@ -23,7 +23,7 @@ public class RolService implements IntRolService {
 		// TODO Auto-generated method stub
 		boolean exito = false;
 
-    	if(!daoRol.existsById(rol.getId()))
+    	if(rol.getId() == null || !daoRol.existsById(rol.getId()))
     	{
     		daoRol.save(rol);
     		exito = true;

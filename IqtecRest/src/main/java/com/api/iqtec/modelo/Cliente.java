@@ -63,7 +63,8 @@ public class Cliente implements Serializable{
 	  ( 
 	      name = "CLIENTE_CONTACTO" , 
 	      joinColumns = {  @JoinColumn ( name = "ID_CLIENTE" ,  referencedColumnName = "ID_CLIENTE" )  }, 
-	      inverseJoinColumns = {  @JoinColumn ( name = "ID_CONTACTO" , referencedColumnName = "ID_CONTACTO" ,  unique = true )  } 
+	      inverseJoinColumns = {  @JoinColumn ( name = "ID_CONTACTO" , referencedColumnName = "ID_CONTACTO" ,  unique = true ) }
+	      
 	  ) 
 	@Singular
 	private List<Contacto> listaContactos;

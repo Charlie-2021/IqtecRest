@@ -24,13 +24,13 @@ import com.api.iqtec.service.ITransporteService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/Iqtec")
+@RequestMapping("/Iqtec/transportes")
 public class TransporteController {
 
 	
 	@Autowired ITransporteService transporteService;
 	
-	@PostMapping("/transportes/crear")
+	@PostMapping("/crear")
 	public ResponseEntity<Transporte> insertarTransporte (@Valid @RequestBody Transporte transporte)
 	{
 		
@@ -44,7 +44,7 @@ public class TransporteController {
 	}
 	
 	
-	@GetMapping ("/transportes/consultar")
+	@GetMapping ("/consultar")
 	public ResponseEntity<List<Transporte>> allTransporte ()
 	{
 		ResponseEntity<List<Transporte>> response;
@@ -58,7 +58,7 @@ public class TransporteController {
 		return response;
 	}
 	
-	@PutMapping ("/transportes/actualizar")
+	@PutMapping ("/actualizar")
 	public ResponseEntity<Transporte> modificarTransporte (@Valid @RequestBody Transporte transporte)
 	{
 		
@@ -71,7 +71,7 @@ public class TransporteController {
 		return new ResponseEntity<>(transporte,status);
 	}
 	
-	@DeleteMapping ("/transportes/eliminar/{id}")
+	@DeleteMapping ("/eliminar/{id}")
 	public ResponseEntity<Long> eliminarTransporte (@PathVariable Long id)
 	{
 		HttpStatus status = HttpStatus.OK;
@@ -84,7 +84,7 @@ public class TransporteController {
 		
 	}
 	
-	@GetMapping("/transportes/nombre/{nombre}")
+	@GetMapping("/nombre/{nombre}")
 	public ResponseEntity<Transporte> findByNombre(@PathVariable String nombre)
 	{
 		

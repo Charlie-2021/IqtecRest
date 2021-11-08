@@ -24,12 +24,12 @@ import com.api.iqtec.service.IClienteService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/Iqtec")
+@RequestMapping("/Iqtec/clientes")
 public class ClienteController {
 
 	@Autowired IClienteService clienteService;
 	
-	@PostMapping("/clientes/crear")
+	@PostMapping("/crear")
 //	@PreAuthorize("hasRole('ADMINISTRADOR')")
 	public ResponseEntity<Cliente> insertarCliente (@Valid @RequestBody Cliente cliente)
 	{
@@ -44,7 +44,7 @@ public class ClienteController {
 	}
 	
 	
-	@GetMapping ("/clientes/consultar")
+	@GetMapping ("/consultar")
 	public ResponseEntity<List<Cliente>> obtenerTodosClientes ()
 	{
 		ResponseEntity<List<Cliente>> response;
@@ -58,7 +58,7 @@ public class ClienteController {
 		return response;
 	}
 	
-	@PutMapping ("/clientes/actualizar")
+	@PutMapping ("/actualizar")
 	public ResponseEntity<Cliente> modificarCliente (@Valid @RequestBody Cliente cliente)
 	{
 		
@@ -71,7 +71,7 @@ public class ClienteController {
 		return new ResponseEntity<>(cliente,status);
 	}
 	
-	@DeleteMapping ("/clientes/eliminar/{id}")
+	@DeleteMapping ("/eliminar/{id}")
 	public ResponseEntity<Long> eliminarCliente (@PathVariable Long id)
 	{
 		HttpStatus status = HttpStatus.OK;
@@ -84,7 +84,7 @@ public class ClienteController {
 		
 	}
 	
-	@GetMapping("/clientes/nombre/{nombre}")
+	@GetMapping("/nombre/{nombre}")
 	public ResponseEntity<Cliente> findByNombre(@PathVariable String nombre)
 	{
 		

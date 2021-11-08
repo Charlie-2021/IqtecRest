@@ -22,13 +22,13 @@ import com.api.iqtec.service.IProyectoService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/Iqtec")
+@RequestMapping("/Iqtec/proyectos")
 public class ProyectoController {
 
 	
 	@Autowired IProyectoService proyectoService;
 	
-	@PostMapping("/proyectos/crear")
+	@PostMapping("/crear")
 	public ResponseEntity<Proyecto> insertarProyecto (@Valid @RequestBody Proyecto proyecto)
 	{
 		
@@ -42,7 +42,7 @@ public class ProyectoController {
 	}
 	
 	
-	@GetMapping ("/proyectos/consultar")
+	@GetMapping ("/consultar")
 	public ResponseEntity<List<Proyecto>> obtenerTodosProyectos ()
 	{
 		ResponseEntity<List<Proyecto>> response;
@@ -56,7 +56,7 @@ public class ProyectoController {
 		return response;
 	}
 	
-	@PutMapping ("/proyectos/actualizar")
+	@PutMapping ("/actualizar")
 	public ResponseEntity<Proyecto> modificarProyecto (@Valid @RequestBody Proyecto proyecto)
 	{
 		
@@ -69,7 +69,7 @@ public class ProyectoController {
 		return new ResponseEntity<>(proyecto,status);
 	}
 	
-	@DeleteMapping ("/proyectos/eliminar/{id}")
+	@DeleteMapping ("/eliminar/{id}")
 	public ResponseEntity<Long> eliminarProyecto (@PathVariable Long id)
 	{
 		HttpStatus status = HttpStatus.OK;

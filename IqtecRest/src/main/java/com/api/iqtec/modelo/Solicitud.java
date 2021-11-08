@@ -2,6 +2,8 @@ package com.api.iqtec.modelo;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,16 +15,22 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import com.api.iqtec.modelo.enums.NombreEstado;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.Singular;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -31,7 +39,7 @@ import lombok.NonNull;
 @Builder
 
 @Entity
-@Table(name = "SOLICUTUDES")
+@Table(name = "SOLICITUDES")
 public class Solicitud implements Serializable {
 
 	/**
@@ -62,13 +70,17 @@ public class Solicitud implements Serializable {
 	@Column(name = "COMENTARIO_TRANSPORTE")
 	private String comentTransporte;
 	
-	@Enumerated(EnumType.STRING)
-	private Estado estado;
 	
-	@OneToOne( cascade = CascadeType.ALL, orphanRemoval = true, optional = false)
-	@JoinColumn(name = "ID_MATERIAL")
-	@NotNull
-	private Material material;
+	 @OneToMany(cascade = CascadeType.ALL)
+	 @JoinTable 
+	  ( 
+	      name = "MATERIAL_SOLICITUD" , 
+	      joinColumns = {  @JoinColumn ( name = "ID_SOLICITUD" ,  referencedColumnName = "ID_SOLICITUD" )  }, 
+	      inverseJoinColumns = {  @JoinColumn ( name = "ID_MATERIAL" , referencedColumnName = "ID_MATERIAL" ,  unique = true ) }
+	      
+	  ) 
+	@Singular
+	private Set<Material> materiales;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ID_PROYECTO")
@@ -79,7 +91,7 @@ public class Solicitud implements Serializable {
 	@NotNull
 	private Sede sede;
 	
-	@OneToOne(fetch = FetchType.EAGER, optional = false)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "ID_TRANSPORTE")
 	@NotNull
 	private Transporte transporte;
@@ -89,7 +101,14 @@ public class Solicitud implements Serializable {
 	private Instrucciones instrucciones;
 	
 
-	@OneToOne(cascade = CascadeType.ALL, optional = false)
-	@JoinColumn(name = "ID_SEGUIMIENTO")
-	private Seguimiento seguimiento;
+	 @OneToMany(cascade = CascadeType.ALL)
+	 @JoinTable 
+	  ( 
+	      name = "SEGUIMIENTO_SOLICITUD" , 
+	      joinColumns = {  @JoinColumn ( name = "ID_SOLICITUD" ,  referencedColumnName = "ID_SOLICITUD" )  }, 
+	      inverseJoinColumns = {  @JoinColumn ( name = "ID_SEGUIMIENTO" , referencedColumnName = "ID_SEGUIMIENTO" ,  unique = true ) }
+	      
+	  ) 
+	@Singular
+	private Set<Seguimiento> seguimientos;
 }

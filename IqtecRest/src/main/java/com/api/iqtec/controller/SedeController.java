@@ -24,12 +24,12 @@ import com.api.iqtec.service.ISedeService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/Iqtec")
+@RequestMapping("/Iqtec/sedes")
 public class SedeController {
 
 	@Autowired ISedeService sedeService;
 	
-	@PostMapping("/sedes/crear")
+	@PostMapping("/crear")
 	public ResponseEntity<Sede> insertarSede (@Valid @RequestBody Sede sede)
 	{
 		
@@ -43,7 +43,7 @@ public class SedeController {
 	}
 	
 	
-	@GetMapping ("/sedes/consultar")
+	@GetMapping ("/consultar")
 	public ResponseEntity<List<Sede>> obtenerSedes ()
 	{
 		ResponseEntity<List<Sede>> response;
@@ -57,7 +57,7 @@ public class SedeController {
 		return response;
 	}
 	
-	@PutMapping ("/sedes/actualizar")
+	@PutMapping ("/actualizar")
 	public ResponseEntity<Sede> modificarSede (@Valid @RequestBody Sede sede)
 	{
 		
@@ -70,7 +70,7 @@ public class SedeController {
 		return new ResponseEntity<>(sede,status);
 	}
 	
-	@DeleteMapping ("/sedes/eliminar/{id}")
+	@DeleteMapping ("/eliminar/{id}")
 	public ResponseEntity<Long> eliminarSede (@PathVariable Long id)
 	{
 		HttpStatus status = HttpStatus.OK;
@@ -83,7 +83,7 @@ public class SedeController {
 		
 	}
 	
-	@GetMapping("/sedes/nombre/{nombre}")
+	@GetMapping("/nombre/{nombre}")
 	public ResponseEntity<Sede> findByNombre(@PathVariable String nombre)
 	{
 		
