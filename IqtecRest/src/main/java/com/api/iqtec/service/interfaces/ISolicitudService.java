@@ -1,8 +1,9 @@
-package com.api.iqtec.service;
+package com.api.iqtec.service.interfaces;
 
 import java.util.List;
 import java.util.Optional;
 
+import com.api.iqtec.modelo.Seguimiento;
 import com.api.iqtec.modelo.Solicitud;
 
 
@@ -17,5 +18,9 @@ public interface ISolicitudService {
 
 	public boolean delete(Long id);
 	
+	public Optional<Solicitud> findById(Long id);
+	
 	public Optional<Solicitud> findByReferencia (String referencia);
-}
+	
+	
+} 

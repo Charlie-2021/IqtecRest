@@ -1,8 +1,10 @@
 package com.api.iqtec.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.iqtec.modelo.Cliente;
+import com.api.iqtec.modelo.Seguimiento;
 import com.api.iqtec.modelo.Solicitud;
-import com.api.iqtec.service.ISolicitudService;
-import com.api.iqtec.service.ITipoService;
+import com.api.iqtec.service.interfaces.ISolicitudService;
+import com.api.iqtec.service.interfaces.ITipoService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -60,6 +63,7 @@ public class SolicitudController {
 	}
 	
 	@PutMapping ("/actualizar")
+	@Transactional
 	public ResponseEntity<Solicitud> modificarSolicitud (@Valid @RequestBody Solicitud solicitud)
 	{
 		
@@ -100,6 +104,30 @@ public class SolicitudController {
 		
 		
 		return response;
+	}
+	
+
+	@PutMapping ("/seguimiento/{id}")
+	public ResponseEntity<Solicitud> modificarSolicitud (@PathVariable Long id, @Valid @RequestBody Seguimiento seguimiento)
+	{
+		Optional<Solicitud> opSolicitud = solicitudService.findById(id);
+		Solicitud solicitud = null;
+		
+		HttpStatus status = HttpStatus.ACCEPTED;
+		
+		if (opSolicitud.isEmpty()) {
+			status = HttpStatus.BAD_REQUEST;
+		} else {
+			solicitud = opSolicitud.get();
+			seguimiento.setFecha(LocalDateTime.now());
+			solicitud.getSeguimientos().add(seguimiento);
+			
+			if (!solicitudService.update(solicitud))
+				status = HttpStatus.BAD_REQUEST;
+			
+		}
+
+		return new ResponseEntity<>(solicitud,status);
 	}
 
 }

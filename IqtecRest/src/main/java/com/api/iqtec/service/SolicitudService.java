@@ -6,8 +6,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.api.iqtec.modelo.Seguimiento;
 import com.api.iqtec.modelo.Solicitud;
 import com.api.iqtec.repositorio.SolicitudRepository;
+import com.api.iqtec.service.interfaces.ISolicitudService;
 
 @Service
 public class SolicitudService implements ISolicitudService {
@@ -64,5 +66,12 @@ public class SolicitudService implements ISolicitudService {
 		// TODO Auto-generated method stub
 		return daoSolicitud.findByReferencia(referencia);
 	}
+
+	@Override
+	public Optional<Solicitud> findById(Long id) {
+		// TODO Auto-generated method stub
+		return daoSolicitud.findById(id);
+	}
+
 
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.api.iqtec.modelo.Sede;
 import com.api.iqtec.repositorio.SedeRepository;
+import com.api.iqtec.service.interfaces.ISedeService;
 
 @Service
 public class SedeService implements ISedeService {

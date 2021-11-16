@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.api.iqtec.modelo.Cliente;
 import com.api.iqtec.modelo.Sede;
-import com.api.iqtec.service.ISedeService;
+import com.api.iqtec.service.interfaces.ISedeService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")

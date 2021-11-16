@@ -38,13 +38,13 @@ import com.api.iqtec.security.entity.Usuario;
 import com.api.iqtec.security.enums.RolNombre;
 import com.api.iqtec.security.service.interfaces.IUsuarioService;
 import com.api.iqtec.security.service.interfaces.IntRolService;
-import com.api.iqtec.service.IClienteService;
-import com.api.iqtec.service.IEstadoService;
-import com.api.iqtec.service.IProyectoService;
-import com.api.iqtec.service.ISedeService;
-import com.api.iqtec.service.ISolicitudService;
-import com.api.iqtec.service.ITipoService;
-import com.api.iqtec.service.ITransporteService;
+import com.api.iqtec.service.interfaces.IClienteService;
+import com.api.iqtec.service.interfaces.IEstadoService;
+import com.api.iqtec.service.interfaces.IProyectoService;
+import com.api.iqtec.service.interfaces.ISedeService;
+import com.api.iqtec.service.interfaces.ISolicitudService;
+import com.api.iqtec.service.interfaces.ITipoService;
+import com.api.iqtec.service.interfaces.ITransporteService;
 
 @RestController
 @RequestMapping("/data")

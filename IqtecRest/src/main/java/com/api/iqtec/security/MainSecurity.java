@@ -62,8 +62,13 @@ public class MainSecurity extends WebSecurityConfigurerAdapter {
 		// TODO Auto-generated method stub
 		http.cors().and().csrf().disable()
 		.authorizeRequests()
-		.antMatchers("/auth/**").permitAll()
-		.antMatchers("/data/**").permitAll()
+		.antMatchers(
+				"/auth/**",
+				"/data/**",
+				"/swagger-ui/**",
+				"/v2/api-docs/**",
+				"/swagger-resources/**",
+				"/configuration/").permitAll()
 //		.antMatchers("/Iqtec/**").permitAll()
 		.anyRequest().authenticated()
 		.and()

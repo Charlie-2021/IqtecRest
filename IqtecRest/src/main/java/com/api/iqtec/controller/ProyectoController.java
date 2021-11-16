@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.iqtec.modelo.Proyecto;
-import com.api.iqtec.service.IProyectoService;
+import com.api.iqtec.service.interfaces.IProyectoService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")

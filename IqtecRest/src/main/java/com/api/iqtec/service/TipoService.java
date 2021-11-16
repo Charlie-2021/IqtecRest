@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.api.iqtec.modelo.Tipo;
 import com.api.iqtec.modelo.enums.TipoMaterial;
 import com.api.iqtec.repositorio.TipoRepository;
+import com.api.iqtec.service.interfaces.ITipoService;
 
 @Service
 public class TipoService implements ITipoService {

@@ -22,6 +22,8 @@ import com.api.iqtec.security.jwt.JwtProvider;
 import com.api.iqtec.security.service.imp.RolService;
 import com.api.iqtec.security.service.imp.UsuarioService;
 
+import io.swagger.annotations.ApiOperation;
+
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.Set;
@@ -41,6 +43,7 @@ public class AuthController {
 
     @Autowired JwtProvider jwtProvider;
 
+    @ApiOperation("Crea un nuevo usuario en la aplicacion.")
     @PostMapping("/nuevo")
     public ResponseEntity<String> nuevo(@Valid @RequestBody NuevoUsuario nuevoUsuario, BindingResult bindingResult){
     	
@@ -68,7 +71,7 @@ public class AuthController {
         return new ResponseEntity<String>("USUARIO CREADO CORRECTAMENTE", HttpStatus.CREATED);
     }
 
-    
+    @ApiOperation("Si el usuario es valido devuelve un Json Web Token.")
     @PostMapping("/login")
     public ResponseEntity<JwtDto> login(@Valid @RequestBody Usuario usuario, BindingResult bindingResult){
         

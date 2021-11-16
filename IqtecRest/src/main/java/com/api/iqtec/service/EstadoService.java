@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.api.iqtec.modelo.Estado;
 import com.api.iqtec.modelo.enums.NombreEstado;
 import com.api.iqtec.repositorio.EstadoRepository;
+import com.api.iqtec.service.interfaces.IEstadoService;
 
 @Service
 public class EstadoService implements IEstadoService {

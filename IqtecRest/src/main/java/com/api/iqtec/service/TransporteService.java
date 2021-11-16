@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.api.iqtec.modelo.Transporte;
 import com.api.iqtec.repositorio.TransporteRepository;
+import com.api.iqtec.service.interfaces.ITransporteService;
 
 @Service
 public class TransporteService implements ITransporteService {

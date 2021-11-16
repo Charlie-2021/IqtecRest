@@ -16,6 +16,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -45,17 +50,22 @@ public class Cliente implements Serializable{
 	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID_CLIENTE")
+	@Hidden
+	@ApiModelProperty(hidden = true)
 	private Long idCliente;
 	
 	@Column(unique = true, name = "RAZON_SOCIAL", length = 50)
 	@NonNull
 	@NotNull
+	@ApiModelProperty(name = "Razon Social", notes = "Nombre del fiscal cliente.", required = true, position = 0 )
 	private String razonSocial;
 	
 	@Column(name = "CIF", length = 10)
+	@ApiModelProperty(notes = "Codigo de Identificacion Fiscal del cliente.",required = true, position = 1)
 	private String cif;
 	
 	@Embedded
+	@ApiModelProperty(notes = "Ubicación geografica del cliente.", position =2 )
 	private Direccion direccion;
 	
 	 @OneToMany(cascade = CascadeType.ALL)
@@ -67,6 +77,7 @@ public class Cliente implements Serializable{
 	      
 	  ) 
 	@Singular
+	@ApiModelProperty(notes = "Listado de contactos responsables en la cominucación.", position = 3)
 	private List<Contacto> listaContactos;
 	
 }

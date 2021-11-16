@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.api.iqtec.modelo.Proyecto;
 import com.api.iqtec.repositorio.ProyectoRepository;
+import com.api.iqtec.service.interfaces.IProyectoService;
 
 @Service
 public class ProyectoService implements IProyectoService {

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.api.iqtec.modelo.Cliente;
 import com.api.iqtec.repositorio.ClienteRepository;
+import com.api.iqtec.service.interfaces.IClienteService;
 
 @Service
 public class ClienteService implements IClienteService {

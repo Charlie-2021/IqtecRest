@@ -1,4 +1,4 @@
-package com.api.iqtec.service;
+package com.api.iqtec.service.interfaces;
 
 import java.util.List;
 
