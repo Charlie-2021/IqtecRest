@@ -46,6 +46,10 @@ import com.api.iqtec.service.interfaces.ISolicitudService;
 import com.api.iqtec.service.interfaces.ITipoService;
 import com.api.iqtec.service.interfaces.ITransporteService;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
 @RequestMapping("/data")
 public class DataCharger {
@@ -70,7 +74,13 @@ public class DataCharger {
 	
 	@Autowired IEstadoService estadoService;
 	
-	@PostMapping("/crear")
+	@PostMapping("/crear")/*
+	@ApiOperation(value = "Cargar datos", notes = "Carga los datos en la base de datos.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = "Created. Los datos fueron insertados correctamente.", response = DataCharger.class ),
+			@ApiResponse(code = 404, message = "Bad Request. No se produce la insercion.", response = String.class),
+			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
+			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})  */
 	public ResponseEntity<String> datos (){
 
 

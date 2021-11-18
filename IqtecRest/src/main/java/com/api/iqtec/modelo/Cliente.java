@@ -65,7 +65,6 @@ public class Cliente implements Serializable{
 	private String cif;
 	
 	@Embedded
-	@ApiModelProperty(notes = "Ubicación geografica del cliente.", position =2 )
 	private Direccion direccion;
 	
 	 @OneToMany(cascade = CascadeType.ALL)
@@ -77,7 +76,6 @@ public class Cliente implements Serializable{
 	      
 	  ) 
 	@Singular
-	@ApiModelProperty(notes = "Listado de contactos responsables en la cominucación.", position = 3)
 	private List<Contacto> listaContactos;
 	
 }

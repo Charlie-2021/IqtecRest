@@ -46,7 +46,7 @@ public class SwaggerConfig implements WebMvcConfigurer{
 				.description("Proyecto fin de curso")
 				.version("1.0")
 				.termsOfServiceUrl("www.licencia.com")
-				.license("Terminos y condicones")
+				.license("Terminos y condiciones")
 				.contact(new Contact("Carlos del campo", null, "carlos.del.campo@outlook.es"))
 				.extensions(Collections.emptyList())
 				.build();

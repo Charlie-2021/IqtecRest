@@ -51,8 +51,12 @@ public class ClienteController {
 		return new ResponseEntity<>(cliente,status);
 	}
 	
-	
 	@GetMapping ("/consultar")
+	@ApiOperation(value = "Consultar clientes", notes = "Consulta todos los clientes a la base de datos.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "find. Los clientes fueron encontrados correctamente.", response = Cliente.class ),
+			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
+			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
 	public ResponseEntity<List<Cliente>> obtenerTodosClientes ()
 	{
 		ResponseEntity<List<Cliente>> response;
@@ -67,6 +71,12 @@ public class ClienteController {
 	}
 	
 	@PutMapping ("/actualizar")
+	@ApiOperation(value = "Actualizar cliente", notes = "Actualiza un cliente a la base de datos.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 202, message = "modify. El cliente fue modificado correctamente.", response = Cliente.class ),
+			@ApiResponse(code = 400, message = "Bad Request. No se ha modifica el cliente.", response = String.class),
+			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
+			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
 	public ResponseEntity<Cliente> modificarCliente (@Valid @RequestBody Cliente cliente)
 	{
 		
@@ -80,6 +90,12 @@ public class ClienteController {
 	}
 	
 	@DeleteMapping ("/eliminar/{id}")
+	@ApiOperation(value = "Eliminar cliente", notes = "Elimina un cliente pasandole el id a la base de datos.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Remove. El cliente fue borrado correctamente.", response = Cliente.class ),
+			@ApiResponse(code = 404, message = "Not found. No se encuentra el cliente.", response = String.class),
+			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
+			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
 	public ResponseEntity<Long> eliminarCliente (@PathVariable Long id)
 	{
 		HttpStatus status = HttpStatus.OK;
@@ -93,6 +109,12 @@ public class ClienteController {
 	}
 	
 	@GetMapping("/nombre/{nombre}")
+	@ApiOperation(value = "Buscar cliente", notes = "Busca un cliente pasandole el nombre a la base de datos.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Find. El cliente fue encontrado correctamente.", response = Cliente.class ),
+			@ApiResponse(code = 404, message = "Not found. No se encuentra el cliente.", response = String.class),
+			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
+			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
 	public ResponseEntity<Cliente> findByNombre(@PathVariable String nombre)
 	{
 		

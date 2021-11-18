@@ -22,6 +22,10 @@ import com.api.iqtec.modelo.Cliente;
 import com.api.iqtec.modelo.Sede;
 import com.api.iqtec.service.interfaces.ISedeService;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/Iqtec/sedes")
@@ -30,6 +34,12 @@ public class SedeController {
 	@Autowired ISedeService sedeService;
 	
 	@PostMapping("/crear")
+	@ApiOperation(value = "Crear sede", notes = "Agregar una nueva sede a la base de datos.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = "Created. La sede fue insertada correctamente.", response = Sede.class ),
+			@ApiResponse(code = 400, message = "Bad Request. No se produce la insercion.", response = String.class),
+			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
+			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
 	public ResponseEntity<Sede> insertarSede (@Valid @RequestBody Sede sede)
 	{
 		
@@ -44,6 +54,11 @@ public class SedeController {
 	
 	
 	@GetMapping ("/consultar")
+	@ApiOperation(value = "Consultar sedes", notes = "Consulta todas las sedes a la base de datos.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "find. Las sedes fueron encontradas correctamente.", response = Sede.class ),
+			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
+			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
 	public ResponseEntity<List<Sede>> obtenerSedes ()
 	{
 		ResponseEntity<List<Sede>> response;
@@ -58,6 +73,12 @@ public class SedeController {
 	}
 	
 	@PutMapping ("/actualizar")
+	@ApiOperation(value = "Actualizar sede", notes = "Actualiza una sede a la base de datos.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 202, message = "modify. La sede fue modificada correctamente.", response = Sede.class ),
+			@ApiResponse(code = 400, message = "Bad Request. No se ha modificado la sede.", response = String.class),
+			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
+			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
 	public ResponseEntity<Sede> modificarSede (@Valid @RequestBody Sede sede)
 	{
 		
@@ -71,6 +92,12 @@ public class SedeController {
 	}
 	
 	@DeleteMapping ("/eliminar/{id}")
+	@ApiOperation(value = "Eliminar sede", notes = "Elimina una sede pasandole el id a la base de datos.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Remove. La sede fue borrada correctamente.", response = Sede.class ),
+			@ApiResponse(code = 404, message = "Not found. No se encuentra la sede.", response = String.class),
+			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
+			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
 	public ResponseEntity<Long> eliminarSede (@PathVariable Long id)
 	{
 		HttpStatus status = HttpStatus.OK;
@@ -84,6 +111,12 @@ public class SedeController {
 	}
 	
 	@GetMapping("/nombre/{nombre}")
+	@ApiOperation(value = "Buscar sede", notes = "Busca una sede pasandole el nombre a la base de datos.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Find. La sede fue encontrada correctamente.", response = Sede.class ),
+			@ApiResponse(code = 404, message = "Not found. No se encuentra la sede.", response = String.class),
+			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
+			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
 	public ResponseEntity<Sede> findByNombre(@PathVariable String nombre)
 	{
 		

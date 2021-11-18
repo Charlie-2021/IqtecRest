@@ -26,6 +26,10 @@ import com.api.iqtec.modelo.Solicitud;
 import com.api.iqtec.service.interfaces.ISolicitudService;
 import com.api.iqtec.service.interfaces.ITipoService;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/Iqtec/solicitud")
@@ -35,6 +39,12 @@ public class SolicitudController {
 	@Autowired ITipoService tipoServices;
 	
 	@PostMapping("/crear")
+	@ApiOperation(value = "Crear solicitud", notes = "Agregar una nueva solicitud a la base de datos.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = "Created. La solicitud fue insertada correctamente.", response = Solicitud.class ),
+			@ApiResponse(code = 400, message = "Bad Request. No se produce la insercion.", response = String.class),
+			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
+			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
 	public ResponseEntity<Solicitud> insertarSolicitud (@Valid @RequestBody Solicitud solicitud)
 	{
 		
@@ -49,6 +59,11 @@ public class SolicitudController {
 	
 	
 	@GetMapping ("/consultar")
+	@ApiOperation(value = "Consultar solicitudes", notes = "Consulta todas las solicitudes a la base de datos.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "find. Las solicitudes fueron encontradas correctamente.", response = Solicitud.class ),
+			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
+			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
 	public ResponseEntity<List<Solicitud>> obtenerTodasSolicitudes ()
 	{
 		ResponseEntity<List<Solicitud>> response;
@@ -64,6 +79,12 @@ public class SolicitudController {
 	
 	@PutMapping ("/actualizar")
 	@Transactional
+	@ApiOperation(value = "Actualizar solicitud", notes = "Actualiza una solicitud a la base de datos.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 202, message = "modify. La solicitud fue modificada correctamente.", response = Solicitud.class ),
+			@ApiResponse(code = 400, message = "Bad Request. No se ha modificado la solicitud.", response = String.class),
+			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
+			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
 	public ResponseEntity<Solicitud> modificarSolicitud (@Valid @RequestBody Solicitud solicitud)
 	{
 		
@@ -77,6 +98,12 @@ public class SolicitudController {
 	}
 	
 	@DeleteMapping ("/eliminar/{id}")
+	@ApiOperation(value = "Eliminar solicitud", notes = "Elimina una solicitud pasandole el id a la base de datos.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Remove. La solicitud fue borrada correctamente.", response = Solicitud.class ),
+			@ApiResponse(code = 404, message = "Not found. No se encuentra la solicitud.", response = String.class),
+			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
+			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
 	public ResponseEntity<Long> eliminarSolicitud (@PathVariable Long id)
 	{
 		HttpStatus status = HttpStatus.OK;
@@ -90,6 +117,12 @@ public class SolicitudController {
 	}
 	
 	@GetMapping("/porReferencia/{referencia}")
+	@ApiOperation(value = "Buscar solicitud", notes = "Busca una solicitud pasandole la referencia a la base de datos.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Find. La solicitud fue encontrada correctamente.", response = Solicitud.class ),
+			@ApiResponse(code = 404, message = "Not found. No se encuentra la solicitud.", response = String.class),
+			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
+			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
 	public ResponseEntity<Solicitud> findByReferencia(@PathVariable String referencia)
 	{
 		
@@ -106,8 +139,14 @@ public class SolicitudController {
 		return response;
 	}
 	
-
+		//esta hay que revisarla el swagger
 	@PutMapping ("/seguimiento/{id}")
+	@ApiOperation(value = "Actualizar solicitud", notes = "Actualiza pasando el id  una solicitud a la base de datos.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 202, message = "modify. La solicitud fue modificada correctamente.", response = Solicitud.class ),
+			@ApiResponse(code = 400, message = "Bad Request. No se ha modificado la solicitud.", response = String.class),
+			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
+			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
 	public ResponseEntity<Solicitud> modificarSolicitud (@PathVariable Long id, @Valid @RequestBody Seguimiento seguimiento)
 	{
 		Optional<Solicitud> opSolicitud = solicitudService.findById(id);
