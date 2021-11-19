@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -37,13 +38,16 @@ public class Proyecto implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
 	@Column(name = "ID_PROYECTO")
+	@ApiModelProperty(hidden = true)
 	private Long idProyecto;
 	
 	@Column(name = "NOMBRE", unique = true, length = 25)
 	@NotNull
+	@ApiModelProperty(name = "Nombre",notes = "Nombra el proyecto", required = true, position = 0 )
 	private String nombre;
 	
 	@Column(name = "DESCRIPCION")
+	@ApiModelProperty(name = "Descripcion",notes = "Describe el proyecto", position = 1 )
 	private String descripcion;
 	
 	@ManyToOne(optional = false)

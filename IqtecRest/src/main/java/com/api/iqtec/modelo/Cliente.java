@@ -61,7 +61,7 @@ public class Cliente implements Serializable{
 	private String razonSocial;
 	
 	@Column(name = "CIF", length = 10)
-	@ApiModelProperty(notes = "Codigo de Identificacion Fiscal del cliente.",required = true, position = 1)
+	@ApiModelProperty(name="Cif", notes = "Codigo de Identificacion Fiscal del cliente.",required = true, position = 1)
 	private String cif;
 	
 	@Embedded

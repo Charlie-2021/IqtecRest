@@ -11,6 +11,7 @@ import javax.persistence.Table;
 
 import com.api.iqtec.modelo.enums.TipoMaterial;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,6 +32,7 @@ public class Tipo {
 	@GeneratedValue(strategy =GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
 	@Column(name = "ID_TIPO")
+	@ApiModelProperty(hidden = true)
 	private Long idTipo;
 	
 	@Enumerated(EnumType.STRING)

@@ -18,6 +18,7 @@ import javax.validation.constraints.NotNull;
 
 import com.api.iqtec.security.entity.Usuario;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -43,6 +44,7 @@ public class Seguimiento implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
 	@Column(name = "ID_SEGUIMIENTO")
+	@ApiModelProperty(hidden = true)
 	private Long idSeguimiento;
 	
 	@OneToOne(cascade = CascadeType.ALL)
@@ -51,6 +53,7 @@ public class Seguimiento implements Serializable{
 	private Estado estado;
 	
 	@Column(name = "FECHA")
+	@ApiModelProperty(name = "Fecha",notes = "inserta la fecha de seguimiento", position = 0 )
 	private LocalDateTime fecha;
 
 	@OneToOne

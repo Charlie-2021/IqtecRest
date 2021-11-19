@@ -14,6 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -40,6 +41,7 @@ public class Material implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID_MATERIAL")
 	@EqualsAndHashCode.Include
+	@ApiModelProperty(hidden = true)
 	private Long idMaterial;
 	
 	@OneToOne
@@ -49,6 +51,7 @@ public class Material implements Serializable {
 	
 	@NotNull
 	@Column(name = "CANTIDAD")
+	@ApiModelProperty(name = "Cantidad",notes = "Idica la antidad del material", required = true, position = 0 )
 	private int cantidad;
 	
 	

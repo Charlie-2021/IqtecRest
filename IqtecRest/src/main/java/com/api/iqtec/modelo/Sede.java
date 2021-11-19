@@ -23,6 +23,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.AssertFalse;
 import javax.validation.constraints.NotNull;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -50,16 +51,19 @@ public class Sede implements Serializable {
 	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID_SEDE")
+	@ApiModelProperty(hidden = true)
 	private Long idSede;
 	
 	@Column(unique = true, name = "NOMBRE", length = 50)
 	@NonNull
 	@NotNull
+	@ApiModelProperty(name = "Nombre",notes = "Nombra la sede", position = 0 )
 	private String nombre;
 	
 	@Column(unique = true, name = "CIF", length = 25)
 	@NonNull
 	@NotNull
+	@ApiModelProperty(name = "Cif",notes = "inserta el Cif de la sede",required = true, position = 1 )
 	private String cif;
 	
 	

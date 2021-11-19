@@ -24,6 +24,7 @@ import javax.validation.constraints.NotNull;
 
 import com.api.iqtec.modelo.enums.NombreEstado;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -52,22 +53,27 @@ public class Solicitud implements Serializable {
 	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID_SOLICITUD")
+	@ApiModelProperty(hidden = true)
 	private Long idSolicitud;
 	
 	
 	@NonNull
 	@NotNull
 	@Column(name = "REFERENCIA", length = 50, unique = true)
+	@ApiModelProperty(name = "Referencia",required = true, notes = "Inserta la referencia de la solicitud", position = 0 )
 	private String referencia;
 	
 	
 	@Column(name = "FECHA_RECOGIDA")
+	@ApiModelProperty(name = "Fecha",notes = "Inserta la fecha de recogida del seguimiento", position = 1 )
 	private String fechaRecogida;
 	
 	@Column(name = "HORARIO", length = 50)
+	@ApiModelProperty(name = "Horario",notes = "inserta el horario del seguimiento", position = 2)
 	private String horario;
 	
 	@Column(name = "COMENTARIO_TRANSPORTE")
+	@ApiModelProperty(name = "Comentario",notes = "Añade un comentario al transporte", position = 3 )
 	private String comentTransporte;
 	
 	

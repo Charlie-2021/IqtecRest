@@ -11,6 +11,7 @@ import javax.persistence.Table;
 
 import com.api.iqtec.modelo.enums.NombreEstado;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,6 +32,7 @@ public class Estado {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
 	@Column(name = "ID_ESTADO")
+	@ApiModelProperty(hidden = true)
 	private Long idEstado;
 	
 	

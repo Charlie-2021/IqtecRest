@@ -18,6 +18,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -45,16 +46,19 @@ public class Transporte implements Serializable{
 	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID_TRANSPORTE")
+	@ApiModelProperty(hidden = true)
 	private Long id;
 	
 	@Column(unique = true, name = "NOMBRE", length = 50, nullable = false)
 	@NonNull
 	@NotNull
+	@ApiModelProperty(name = "Nombre",notes = "Nombra el transporte",required = true, position = 0 )
 	private String nombre;
 	
 	@Column(name = "CIF", length = 20, nullable = false)
 	@NonNull
 	@NotNull
+	@ApiModelProperty(name = "Cif",notes = "Inserta el Cif del transporte",required =true, position = 1 )
 	private String cif;
 	
 	@Embedded
