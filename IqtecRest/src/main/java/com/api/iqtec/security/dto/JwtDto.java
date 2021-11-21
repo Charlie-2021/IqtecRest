@@ -2,7 +2,14 @@ package com.api.iqtec.security.dto;
 
 import org.springframework.security.core.GrantedAuthority;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 import java.util.Collection;
+
 
 public class JwtDto {
     private String token;

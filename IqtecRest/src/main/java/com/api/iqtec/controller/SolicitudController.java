@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,7 +58,7 @@ public class SolicitudController {
 		return new ResponseEntity<>(solicitud,status);
 	}
 	
-	
+	@PreAuthorize(value = "hasRole('ROLE_ADMIN')")
 	@GetMapping ("/consultar")
 	@ApiOperation(value = "Consultar solicitudes", notes = "Consulta todas las solicitudes a la base de datos.")
 	@ApiResponses(value = {
@@ -143,8 +144,8 @@ public class SolicitudController {
 	@PutMapping ("/seguimiento/{id}")
 	@ApiOperation(value = "Actualizar solicitud", notes = "Actualiza pasando el id  una solicitud a la base de datos.")
 	@ApiResponses(value = {
-			@ApiResponse(code = 202, message = "modify. La solicitud fue modificada correctamente.", response = Solicitud.class ),
-			@ApiResponse(code = 400, message = "Bad Request. No se ha modificado la solicitud.", response = String.class),
+			@ApiResponse(code = 202, message = "Accepted. La solicitud fue modificada correctamente.", response = Solicitud.class ),
+			@ApiResponse(code = 400, message = "Bad Request. No se ha encontrado el id de la solicitud.", response = String.class),
 			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
 			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
 	public ResponseEntity<Solicitud> modificarSolicitud (@PathVariable Long id, @Valid @RequestBody Seguimiento seguimiento)

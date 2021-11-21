@@ -86,7 +86,7 @@ public class Solicitud implements Serializable {
 	      
 	  ) 
 	@Singular
-	private Set<Material> materiales;
+	private List<Material> materiales;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ID_PROYECTO")
@@ -116,5 +116,5 @@ public class Solicitud implements Serializable {
 	      
 	  ) 
 	@Singular
-	private Set<Seguimiento> seguimientos;
+	private List<Seguimiento> seguimientos;
 }

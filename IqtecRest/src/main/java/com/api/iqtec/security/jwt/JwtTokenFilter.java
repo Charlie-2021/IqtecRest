@@ -8,7 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.api.iqtec.security.service.imp.UserDetailsServiceImpl;
+import com.api.iqtec.security.service.UserDetailsServiceImpl;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -20,9 +20,11 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     private final static Logger logger = LoggerFactory.getLogger(JwtTokenFilter.class);
 
-    @Autowired private JwtProvider jwtProvider;
+    @Autowired 
+    JwtProvider jwtProvider;
 
-    @Autowired private UserDetailsServiceImpl userDetailsService;
+    @Autowired 
+    UserDetailsServiceImpl userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {

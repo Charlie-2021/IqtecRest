@@ -1,4 +1,4 @@
-package com.api.iqtec.security.entity;
+package com.api.iqtec.modelo;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -25,6 +25,7 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
+    @Column(name = "ID_USUARIO")
     private Long id;
 
     
@@ -48,4 +49,6 @@ public class Usuario {
         this.nombreUsuario = nombreUsuario;
         this.password = password;
     }
+    
+    
 }

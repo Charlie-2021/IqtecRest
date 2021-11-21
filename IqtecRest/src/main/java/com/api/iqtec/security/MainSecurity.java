@@ -16,16 +16,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.api.iqtec.security.jwt.JwtEntryPoint;
 import com.api.iqtec.security.jwt.JwtTokenFilter;
-import com.api.iqtec.security.service.imp.UserDetailsServiceImpl;
+import com.api.iqtec.security.service.UserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class MainSecurity extends WebSecurityConfigurerAdapter {
 
-	@Autowired private UserDetailsServiceImpl userDetailsService;
+	@Autowired 
+	UserDetailsServiceImpl userDetailsService;
 
-	@Autowired private JwtEntryPoint jwtEntryPoint;
+	@Autowired 
+	JwtEntryPoint jwtEntryPoint;
 
 	@Bean
 	public JwtTokenFilter jwtTokenFilter(){

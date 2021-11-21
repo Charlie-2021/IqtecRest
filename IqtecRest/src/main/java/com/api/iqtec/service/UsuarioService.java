@@ -1,34 +1,40 @@
-package com.api.iqtec.security.service.imp;
+package com.api.iqtec.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.api.iqtec.security.entity.Usuario;
-import com.api.iqtec.security.repository.UsuarioRepository;
-import com.api.iqtec.security.service.interfaces.IUsuarioService;
+import com.api.iqtec.modelo.Usuario;
+import com.api.iqtec.repositorio.UsuarioRepository;
+import com.api.iqtec.service.interfaces.IUsuarioService;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @Transactional
-public class UsuarioService implements IUsuarioService {
+public class UsuarioService implements IUsuarioService{
 
-    @Autowired private UsuarioRepository daoUsuario;
+    @Autowired 
+    UsuarioRepository daoUsuario;
 
-
-	@Override
-	public List<Usuario> findAll() {
+    @Override
+    public Optional<Usuario> getByNombreUsuario(String nombreUsuario) {
 		// TODO Auto-generated method stub
-		return (List<Usuario>) daoUsuario.findAll();
+		return daoUsuario.findByNombreUsuario(nombreUsuario);
 	}
 
-	@Override
-	public boolean insert(Usuario usuario) {
+    @Override
+	public boolean existsByNombreUsuario(String nombreUsuario) {
 		// TODO Auto-generated method stub
-		boolean exito = false;
+		return daoUsuario.existsByNombreUsuario(nombreUsuario);
+	}
+    
+    @Override
+	public boolean save( Usuario usuario) {
+    	
+    	boolean exito = false;
 		
 		if(usuario.getId() == null || !daoUsuario.existsById(usuario.getId()))
 		{
@@ -36,9 +42,18 @@ public class UsuarioService implements IUsuarioService {
 			exito = true;
 		}
 		return exito;
+    	
+   
+	}
+	
+    @Override
+	public List<Usuario> findAll() {
+		// TODO Auto-generated method stub
+		return (List<Usuario>) daoUsuario.findAll();
 	}
 
-	@Override
+
+    @Override
 	public boolean update(Usuario usuario) {
 		// TODO Auto-generated method stub
 		boolean exito = false;
@@ -51,8 +66,7 @@ public class UsuarioService implements IUsuarioService {
 		return exito;
 	}
 
-	
-	@Override
+    @Override
 	public boolean delete(Long id) {
 		// TODO Auto-generated method stub
 		boolean exito = false;
@@ -65,15 +79,5 @@ public class UsuarioService implements IUsuarioService {
 		return exito;
 	}
 
-	@Override
-	public Optional<Usuario> getByNombreUsuario(String nombreUsuario) {
-		// TODO Auto-generated method stub
-		return daoUsuario.findByNombreUsuario(nombreUsuario);
-	}
 
-	@Override
-	public boolean existsByNombreUsuario(String nombreUsuario) {
-		// TODO Auto-generated method stub
-		return daoUsuario.existsByNombreUsuario(nombreUsuario);
-	}
 }

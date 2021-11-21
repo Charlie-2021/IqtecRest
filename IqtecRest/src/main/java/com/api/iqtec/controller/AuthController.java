@@ -1,5 +1,4 @@
-package com.api.iqtec.security.controller;
-
+package com.api.iqtec.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,21 +11,22 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
+import com.api.iqtec.modelo.Rol;
+import com.api.iqtec.modelo.Usuario;
+import com.api.iqtec.modelo.enums.RolNombre;
 import com.api.iqtec.security.dto.JwtDto;
+import com.api.iqtec.security.dto.LoginUsuario;
 import com.api.iqtec.security.dto.NuevoUsuario;
-import com.api.iqtec.security.entity.Rol;
-import com.api.iqtec.security.entity.Usuario;
-import com.api.iqtec.security.enums.RolNombre;
 import com.api.iqtec.security.jwt.JwtProvider;
-import com.api.iqtec.security.service.imp.RolService;
-import com.api.iqtec.security.service.imp.UsuarioService;
-
+import com.api.iqtec.service.RolService;
+import com.api.iqtec.service.UsuarioService;
 import io.swagger.annotations.ApiOperation;
-
 import javax.validation.Valid;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+
 
 @RestController
 @RequestMapping("/auth")
@@ -45,10 +45,10 @@ public class AuthController {
 
     @ApiOperation("Crea un nuevo usuario en la aplicacion.")
     @PostMapping("/nuevo")
-    public ResponseEntity<String> nuevo(@Valid @RequestBody NuevoUsuario nuevoUsuario, BindingResult bindingResult){
+    public ResponseEntity<?> nuevo(@Valid @RequestBody NuevoUsuario nuevoUsuario, BindingResult bindingResult){
     	
         if(bindingResult.hasErrors())
-            return new ResponseEntity<String>(bindingResult.getAllErrors().toString(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>("ERROR", HttpStatus.BAD_REQUEST);
         
         if(usuarioService.existsByNombreUsuario(nuevoUsuario.getNombreUsuario()))
             return new ResponseEntity<String>( "EL NOMBRE DE USUARIO YA EXISTE", HttpStatus.BAD_REQUEST);
@@ -58,26 +58,25 @@ public class AuthController {
         Usuario usuario = new Usuario(nuevoUsuario.getNombreUsuario(), passwordEncoder.encode(nuevoUsuario.getPassword()));
         
         Set<Rol> roles = new HashSet<>();
+        roles.add(rolService.getByRolNombre(RolNombre.ROLE_USER).get());
         
-        roles.add(rolService.getByRolNombre(RolNombre.TECNICO).get());
-        
-        if(nuevoUsuario.getRoles().contains("ADMINISTRADOR"))
-            roles.add(rolService.getByRolNombre(RolNombre.ADMINISTRADOR).get());
+        if(nuevoUsuario.getRoles().contains("admin"))
+            roles.add(rolService.getByRolNombre(RolNombre.ROLE_ADMIN).get());
         
         usuario.setRoles(roles);
         
-        usuarioService.insert(usuario);
+        usuarioService.save(usuario);
         
         return new ResponseEntity<String>("USUARIO CREADO CORRECTAMENTE", HttpStatus.CREATED);
     }
 
     @ApiOperation("Si el usuario es valido devuelve un Json Web Token.")
     @PostMapping("/login")
-    public ResponseEntity<JwtDto> login(@Valid @RequestBody Usuario usuario, BindingResult bindingResult){
+    public ResponseEntity<JwtDto> login(@Valid @RequestBody LoginUsuario loginUsuario, BindingResult bindingResult){
         
     	if(bindingResult.hasErrors())
-            return new ResponseEntity<JwtDto>(HttpStatus.BAD_REQUEST);
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(usuario.getNombreUsuario(), usuario.getPassword()));
+            return new ResponseEntity("ERROR", HttpStatus.BAD_REQUEST);
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUsuario.getNombreUsuario(), loginUsuario.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         
@@ -87,6 +86,35 @@ public class AuthController {
         
         JwtDto jwtDto = new JwtDto(jwt, userDetails.getUsername(), userDetails.getAuthorities());
         
-        return new ResponseEntity<JwtDto>(jwtDto, HttpStatus.OK);
+        return new ResponseEntity(jwtDto, HttpStatus.OK);
+    }
+    
+    
+    @GetMapping("/consultar")
+    public ResponseEntity<List<Usuario>>consultar(){
+    	
+    	ResponseEntity<List<Usuario>> response;
+		List<Usuario> todos;
+		
+		todos = usuarioService.findAll();
+		
+		return new ResponseEntity<>(todos,HttpStatus.OK);
+    }
+
+    @GetMapping("/nombre/{nombre}")
+    public ResponseEntity<?>getByNombreUsuario(@PathVariable String nombre){
+    	ResponseEntity<?> response;
+		
+    	Usuario usuario;
+		Optional<Usuario> op = usuarioService.getByNombreUsuario(nombre);
+		
+		if (op.isPresent()) {
+			usuario = op.get();
+			response = new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
+		} else {
+			response = new ResponseEntity<String>("No existe ningun usuario.", HttpStatus.NOT_FOUND);	
+		}
+		
+		return response;
     }
 }

@@ -1,16 +1,16 @@
-package com.api.iqtec.security.service.interfaces;
+package com.api.iqtec.service.interfaces;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.api.iqtec.security.entity.Usuario;
+import com.api.iqtec.modelo.Usuario;
 
 
 public interface IUsuarioService {
 
 	public List<Usuario> findAll ();
 	
-	public boolean insert(Usuario usuario);
+	public boolean save(Usuario usuario);
 
 	public boolean update(Usuario usuario);
 

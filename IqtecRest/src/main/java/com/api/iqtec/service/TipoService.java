@@ -1,8 +1,10 @@
 package com.api.iqtec.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.api.iqtec.modelo.Tipo;
@@ -37,6 +39,12 @@ public class TipoService implements ITipoService {
 	public Optional<Tipo> findByTipoMaterial(TipoMaterial tipoMaterial) {
 		// TODO Auto-generated method stub
 		return daoTipo.findByTipoMaterial(tipoMaterial);
+	}
+
+	@Override
+	public List<Tipo> findAll() {
+		// TODO Auto-generated method stub
+		return (List<Tipo>) daoTipo.findAll();
 	}
 
 }

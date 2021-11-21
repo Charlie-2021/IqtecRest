@@ -26,25 +26,27 @@ import com.api.iqtec.modelo.Estado;
 import com.api.iqtec.modelo.Instrucciones;
 import com.api.iqtec.modelo.Material;
 import com.api.iqtec.modelo.Proyecto;
+import com.api.iqtec.modelo.Rol;
 import com.api.iqtec.modelo.Sede;
 import com.api.iqtec.modelo.Seguimiento;
 import com.api.iqtec.modelo.Solicitud;
 import com.api.iqtec.modelo.Tipo;
 import com.api.iqtec.modelo.Transporte;
+import com.api.iqtec.modelo.Usuario;
 import com.api.iqtec.modelo.enums.NombreEstado;
+import com.api.iqtec.modelo.enums.RolNombre;
 import com.api.iqtec.modelo.enums.TipoMaterial;
-import com.api.iqtec.security.entity.Rol;
-import com.api.iqtec.security.entity.Usuario;
-import com.api.iqtec.security.enums.RolNombre;
-import com.api.iqtec.security.service.interfaces.IUsuarioService;
-import com.api.iqtec.security.service.interfaces.IntRolService;
+import com.api.iqtec.service.RolService;
+import com.api.iqtec.service.UsuarioService;
 import com.api.iqtec.service.interfaces.IClienteService;
 import com.api.iqtec.service.interfaces.IEstadoService;
 import com.api.iqtec.service.interfaces.IProyectoService;
+import com.api.iqtec.service.interfaces.IRolService;
 import com.api.iqtec.service.interfaces.ISedeService;
 import com.api.iqtec.service.interfaces.ISolicitudService;
 import com.api.iqtec.service.interfaces.ITipoService;
 import com.api.iqtec.service.interfaces.ITransporteService;
+import com.api.iqtec.service.interfaces.IUsuarioService;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -66,9 +68,9 @@ public class DataCharger {
 	
 	@Autowired ITipoService tipoService;
 	
-	@Autowired IntRolService rolService;
+	@Autowired RolService rolService;
 	
-	@Autowired IUsuarioService usuarioService;
+	@Autowired UsuarioService usuarioService;
 	
 	@Autowired PasswordEncoder passwordEncoder;
 	
@@ -84,8 +86,8 @@ public class DataCharger {
 	public ResponseEntity<String> datos (){
 
 
-		Rol rolAdmnid = new Rol(null, RolNombre.ADMINISTRADOR);	
-		Rol rolTecnico = new Rol(null, RolNombre.TECNICO);
+		Rol rolAdmnid = Rol.builder().rolNombre(RolNombre.ROLE_ADMIN).build();
+		Rol rolTecnico =  Rol.builder().rolNombre(RolNombre.ROLE_USER).build();
 		
 		Usuario userAdmin = new Usuario("admin", passwordEncoder.encode("admin"));
 		Usuario userTecnico = new Usuario("tecnico", passwordEncoder.encode("tecnico"));
@@ -343,8 +345,8 @@ public class DataCharger {
 		rolService.save(rolAdmnid);
 		rolService.save(rolTecnico);
 		
-		usuarioService.insert(userTecnico);
-		usuarioService.insert(userAdmin);
+		usuarioService.save(userTecnico);
+		usuarioService.save(userAdmin);
 		
 		estadoService.save(solicitado);
 		estadoService.save(recibido);

@@ -1,31 +1,12 @@
 package com.api.iqtec.security.entity;
 
-
-
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
-
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-
-
-@Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+import com.api.iqtec.modelo.Usuario;
 
 
 public class UsuarioPrincipal implements UserDetails {
@@ -34,6 +15,12 @@ public class UsuarioPrincipal implements UserDetails {
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
 
+    
+    public UsuarioPrincipal(String nombreUsuario, String password, Collection<? extends GrantedAuthority> authorities) {
+        this.nombreUsuario = nombreUsuario;
+        this.password = password;
+        this.authorities = authorities;
+    }
 
 
     public static UsuarioPrincipal build(Usuario usuario){
@@ -78,5 +65,5 @@ public class UsuarioPrincipal implements UserDetails {
         return true;
     }
 
- 
+   
 }
