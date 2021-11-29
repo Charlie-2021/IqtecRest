@@ -75,7 +75,7 @@ public class ProyectoController {
 	@PutMapping ("/actualizar")
 	@ApiOperation(value = "Actualizar proyecto", notes = "Actualiza un proyecto a la base de datos.")
 	@ApiResponses(value = {
-			@ApiResponse(code = 202, message = "modify. El proyecto fue modificado correctamente.", response = Proyecto.class ),
+			@ApiResponse(code = 202, message = "Accepted. El proyecto fue modificado correctamente.", response = Proyecto.class ),
 			@ApiResponse(code = 400, message = "Bad Request. No se ha modificado el proyecto.", response = String.class),
 			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
 			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})

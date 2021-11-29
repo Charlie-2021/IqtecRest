@@ -4,6 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.api.iqtec.modelo.Instrucciones;
 
-public interface InstruccionesReopository extends CrudRepository<Instrucciones, Long> {
+public interface InstruccionesRepository extends CrudRepository<Instrucciones, Long> {
 
 }

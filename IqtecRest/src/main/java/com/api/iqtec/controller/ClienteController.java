@@ -1,13 +1,16 @@
 package com.api.iqtec.controller;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,7 +54,7 @@ public class ClienteController {
 	@GetMapping ("/consultar")
 	@ApiOperation(value = "Consultar clientes", notes = "Consulta todos los clientes a la base de datos.")
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "find. Los clientes fueron encontrados correctamente.", response = Cliente.class ),
+			@ApiResponse(code = 200, message = "OK. Los clientes fueron encontrados correctamente.", response = Cliente.class ),
 			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
 			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
 	public ResponseEntity<List<Cliente>> obtenerTodosClientes ()
@@ -70,7 +73,7 @@ public class ClienteController {
 	@PutMapping ("/actualizar")
 	@ApiOperation(value = "Actualizar cliente", notes = "Actualiza un cliente a la base de datos.")
 	@ApiResponses(value = {
-			@ApiResponse(code = 202, message = "modify. El cliente fue modificado correctamente.", response = Cliente.class ),
+			@ApiResponse(code = 202, message = "Accepted. El cliente fue modificado correctamente.", response = Cliente.class ),
 			@ApiResponse(code = 400, message = "Bad Request. No se ha modifica el cliente.", response = String.class),
 			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
 			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
@@ -89,7 +92,7 @@ public class ClienteController {
 	@DeleteMapping ("/eliminar/{id}")
 	@ApiOperation(value = "Eliminar cliente", notes = "Elimina un cliente pasandole el id a la base de datos.")
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Remove. El cliente fue borrado correctamente.", response = Cliente.class ),
+			@ApiResponse(code = 200, message = "OK. El cliente fue borrado correctamente.", response = Cliente.class ),
 			@ApiResponse(code = 404, message = "Not found. No se encuentra el cliente.", response = String.class),
 			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
 			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})

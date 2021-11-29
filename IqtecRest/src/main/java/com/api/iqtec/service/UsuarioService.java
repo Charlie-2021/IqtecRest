@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.api.iqtec.modelo.Usuario;
+import com.api.iqtec.redis.RedisUserUtility;
 import com.api.iqtec.repositorio.UsuarioRepository;
 import com.api.iqtec.service.interfaces.IUsuarioService;
 
@@ -18,6 +19,7 @@ public class UsuarioService implements IUsuarioService{
 
     @Autowired 
     UsuarioRepository daoUsuario;
+    @Autowired RedisUserUtility redisUtility;
 
     @Override
     public Optional<Usuario> getByNombreUsuario(String nombreUsuario) {
@@ -31,25 +33,36 @@ public class UsuarioService implements IUsuarioService{
 		return daoUsuario.existsByNombreUsuario(nombreUsuario);
 	}
     
+	
     @Override
 	public boolean save( Usuario usuario) {
     	
     	boolean exito = false;
 		
-		if(usuario.getId() == null || !daoUsuario.existsById(usuario.getId()))
+		if(usuario.getId() == null ||!daoUsuario.existsById(usuario.getId()))
 		{
 			daoUsuario.save(usuario);
+			
+			redisUtility.updateRedisCache(daoUsuario.findByNombreUsuario(usuario.getNombreUsuario()).get(), "insert");
+			
 			exito = true;
 		}
 		return exito;
-    	
-   
-	}
+    }
+    
 	
     @Override
 	public List<Usuario> findAll() {
-		// TODO Auto-generated method stub
-		return (List<Usuario>) daoUsuario.findAll();
+		
+    	List<Usuario> transports = redisUtility.getValues();
+		
+		if(transports.size() < 1) {
+			transports = (List<Usuario>) daoUsuario.findAll();
+			
+			redisUtility.setValues(transports);
+		}
+		
+		return transports;
 	}
 
 
@@ -61,6 +74,10 @@ public class UsuarioService implements IUsuarioService{
 		if(daoUsuario.existsById(usuario.getId()))
 		{
 			daoUsuario.save(usuario);
+			
+			redisUtility.updateRedisCache(usuario, "update");
+
+			
 			exito = true;
 		}
 		return exito;
@@ -73,6 +90,9 @@ public class UsuarioService implements IUsuarioService{
 
 		if(daoUsuario.existsById(id))
 		{
+			redisUtility.updateRedisCache(daoUsuario.findById(id).get(), "delete");
+
+			
 			daoUsuario.deleteById(id);
 			exito = true;
 		}

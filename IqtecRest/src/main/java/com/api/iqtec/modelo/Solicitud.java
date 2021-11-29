@@ -76,7 +76,6 @@ public class Solicitud implements Serializable {
 	@ApiModelProperty(name = "Comentario",notes = "Añade un comentario al transporte", position = 3 )
 	private String comentTransporte;
 	
-	
 	 @OneToMany(cascade = CascadeType.ALL)
 	 @JoinTable 
 	  ( 

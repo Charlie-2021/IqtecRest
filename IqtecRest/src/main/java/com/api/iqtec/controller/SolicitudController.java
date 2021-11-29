@@ -19,13 +19,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.iqtec.modelo.Cliente;
+import com.api.iqtec.modelo.Estado;
 import com.api.iqtec.modelo.Seguimiento;
 import com.api.iqtec.modelo.Solicitud;
+import com.api.iqtec.modelo.Usuario;
+import com.api.iqtec.modelo.enums.NombreEstado;
+import com.api.iqtec.service.interfaces.IEstadoService;
 import com.api.iqtec.service.interfaces.ISolicitudService;
 import com.api.iqtec.service.interfaces.ITipoService;
+import com.api.iqtec.service.interfaces.IUsuarioService;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -38,6 +44,8 @@ public class SolicitudController {
 	
 	@Autowired ISolicitudService solicitudService;
 	@Autowired ITipoService tipoServices;
+	@Autowired IUsuarioService userService;
+	@Autowired IEstadoService estadoService;
 	
 	@PostMapping("/crear")
 	@ApiOperation(value = "Crear solicitud", notes = "Agregar una nueva solicitud a la base de datos.")
@@ -141,14 +149,14 @@ public class SolicitudController {
 	}
 	
 		//esta hay que revisarla el swagger
-	@PutMapping ("/seguimiento/{id}")
-	@ApiOperation(value = "Actualizar solicitud", notes = "Actualiza pasando el id  una solicitud a la base de datos.")
+	@PutMapping (value = "/seguimiento", params = {"id","username"})
+	@ApiOperation(value = "Cambio de Estado", notes = "Cambia al siguiente estado la solicitud indicada.")
 	@ApiResponses(value = {
 			@ApiResponse(code = 202, message = "Accepted. La solicitud fue modificada correctamente.", response = Solicitud.class ),
 			@ApiResponse(code = 400, message = "Bad Request. No se ha encontrado el id de la solicitud.", response = String.class),
 			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
 			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
-	public ResponseEntity<Solicitud> modificarSolicitud (@PathVariable Long id, @Valid @RequestBody Seguimiento seguimiento)
+	public ResponseEntity<?> cambioEstado (@RequestParam Long id, @RequestParam String username)
 	{
 		Optional<Solicitud> opSolicitud = solicitudService.findById(id);
 		Solicitud solicitud = null;
@@ -159,12 +167,75 @@ public class SolicitudController {
 			status = HttpStatus.BAD_REQUEST;
 		} else {
 			solicitud = opSolicitud.get();
-			seguimiento.setFecha(LocalDateTime.now());
+			Usuario usuario = userService.getByNombreUsuario(username).get();
+			Estado estado;
+			Seguimiento seguimiento = Seguimiento.builder()
+					.fecha(LocalDateTime.now())
+					.usuario(usuario)
+					.build();
+			
+			int cuantos = solicitud.getSeguimientos().size();
+			System.out.println("CUANTOS" + cuantos);
+			switch (cuantos) {
+			case 1:
+				estado = estadoService.getByNombreEstado(NombreEstado.RECIBIDO).get();
+				seguimiento.setEstado(estado);
+				break;
+			case 2: 
+				estado = estadoService.getByNombreEstado(NombreEstado.PRODUCCION).get();
+				seguimiento.setEstado(estado);
+				break;
+			case 3: 
+				estado = estadoService.getByNombreEstado(NombreEstado.PROCESADO).get();
+				seguimiento.setEstado(estado);
+				break;
+			case 4: 
+				estado = estadoService.getByNombreEstado(NombreEstado.INFORME).get();
+				seguimiento.setEstado(estado);
+				break;
+			case 5: 
+				estado = estadoService.getByNombreEstado(NombreEstado.FINALIZADO).get();
+				seguimiento.setEstado(estado);
+				break;
+			default:
+				return new ResponseEntity<String>("La solicitud ya esta finalizada",status);
+			}
+			
 			solicitud.getSeguimientos().add(seguimiento);
 			
 			if (!solicitudService.update(solicitud))
 				status = HttpStatus.BAD_REQUEST;
 			
+		}
+
+		return new ResponseEntity<Solicitud>(solicitud,status);
+	}
+	
+	
+	@PutMapping ("/seguimiento/{id}")
+	@ApiOperation(value = "Actualizar solicitud", notes = "Actualiza pasando el id el estado de una solicitud a la base de datos.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 202, message = "Accepted. La solicitud fue modificada correctamente.", response = Solicitud.class ),
+			@ApiResponse(code = 400, message = "Bad Request. No se ha encontrado el id de la solicitud.", response = String.class),
+			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
+			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
+	public ResponseEntity<Solicitud> modificarSolicitud (@PathVariable Long id, @Valid @RequestBody Seguimiento seguimiento)
+	{
+		Optional<Solicitud> opSolicitud = solicitudService.findById(id);
+		Solicitud solicitud = null;
+
+		HttpStatus status = HttpStatus.ACCEPTED;
+
+		if (opSolicitud.isEmpty()) {
+			status = HttpStatus.BAD_REQUEST;
+		} else {
+			solicitud = opSolicitud.get();
+			seguimiento.setFecha(LocalDateTime.now());
+			solicitud.getSeguimientos().add(seguimiento);
+
+			if (!solicitudService.update(solicitud))
+				status = HttpStatus.BAD_REQUEST;
+
 		}
 
 		return new ResponseEntity<>(solicitud,status);

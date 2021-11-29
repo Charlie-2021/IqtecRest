@@ -59,7 +59,6 @@ public class Contacto implements Serializable {
 	@ApiModelProperty(name = "Telefono Secundario", notes = "Anota el telefono secundario del contacto", required = false, position = 2 )
 	private String telefono2;
 	
-	@Email
 	@Column(name = "EMAIL", length = 50)
 	@ApiModelProperty(name = "Email", notes = "Anota el Email del contacto", required = false, position = 3 )
 	private String email;

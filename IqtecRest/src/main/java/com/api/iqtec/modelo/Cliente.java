@@ -17,6 +17,10 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -67,13 +71,13 @@ public class Cliente implements Serializable{
 	@Embedded
 	private Direccion direccion;
 	
-	 @OneToMany(cascade = CascadeType.ALL)
+	 @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	 @JoinTable 
 	  ( 
 	      name = "CLIENTE_CONTACTO" , 
-	      joinColumns = {  @JoinColumn ( name = "ID_CLIENTE" ,  referencedColumnName = "ID_CLIENTE" )  }, 
-	      inverseJoinColumns = {  @JoinColumn ( name = "ID_CONTACTO" , referencedColumnName = "ID_CONTACTO" ,  unique = true ) }
-	      
+	      joinColumns = {  @JoinColumn ( name = "ID_CLIENTE" ,  referencedColumnName = "ID_CLIENTE")  }, 
+	      inverseJoinColumns = {  @JoinColumn ( name = "ID_CONTACTO" , referencedColumnName = "ID_CONTACTO" ,  unique = true, insertable = true ) }
+	
 	  ) 
 	@Singular
 	private List<Contacto> listaContactos;

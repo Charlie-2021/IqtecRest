@@ -18,6 +18,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -69,7 +72,7 @@ public class Transporte implements Serializable{
 	  ( 
 	      name = "TRANSPORTE_CONTACTO" , 
 	      joinColumns = {  @JoinColumn ( name = "ID_TRANSPORTE" ,  referencedColumnName = "ID_TRANSPORTE" )  }, 
-	      inverseJoinColumns = {  @JoinColumn ( name = "ID_CONTACTO" , referencedColumnName = "ID_CONTACTO" ,  unique = true )  } 
+	      inverseJoinColumns = {  @JoinColumn ( name = "ID_CONTACTO" , referencedColumnName = "ID_CONTACTO" ,  unique = true, insertable = true )  } 
 	  ) 
 	@Singular
 	private List<Contacto> listaContactos;

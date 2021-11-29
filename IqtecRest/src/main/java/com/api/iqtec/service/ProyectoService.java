@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.api.iqtec.modelo.Proyecto;
+import com.api.iqtec.redis.RedisProjectUtility;
 import com.api.iqtec.repositorio.ProyectoRepository;
 import com.api.iqtec.service.interfaces.IProyectoService;
 
@@ -14,21 +15,33 @@ public class ProyectoService implements IProyectoService {
 
 	@Autowired ProyectoRepository daoProyecto;
 	
+	@Autowired RedisProjectUtility redisUtility;
+	
 	
 	@Override
 	public List<Proyecto> findAll() {
-		// TODO Auto-generated method stub
-		return (List<Proyecto>) daoProyecto.findAll();
+		
+		List<Proyecto> projects = redisUtility.getValues();
+		
+		if(projects.size() < 1) {
+			projects = (List<Proyecto>) daoProyecto.findAll();
+			
+			redisUtility.setValues(projects);
+		}
+		return projects;
 	}
 
 	@Override
 	public boolean insert(Proyecto proyecto) {
-		// TODO Auto-generated method stub
+		
 		boolean exito = false;
 		
 		if(proyecto.getIdProyecto()== null || !daoProyecto.existsById(proyecto.getIdProyecto()))
 		{
 			daoProyecto.save(proyecto);
+			
+			redisUtility.updateRedisCache(daoProyecto.findByNombre(proyecto.getNombre()).get(), "insert");
+			
 			exito = true;
 		}
 		return exito;
@@ -36,12 +49,16 @@ public class ProyectoService implements IProyectoService {
 
 	@Override
 	public boolean update(Proyecto proyecto) {
-		// TODO Auto-generated method stub
+		
 		boolean exito = false;
 		
 		if(daoProyecto.existsById(proyecto.getIdProyecto()))
 		{
 			daoProyecto.save(proyecto);
+			
+			redisUtility.updateRedisCache(proyecto, "update");
+
+			
 			exito = true;
 		}
 		
@@ -50,11 +67,14 @@ public class ProyectoService implements IProyectoService {
 
 	@Override
 	public boolean delete(Long id) {
-		// TODO Auto-generated method stub
+		
 		boolean exito = false;
 		
 		if(daoProyecto.existsById(id))
 		{
+			
+			redisUtility.updateRedisCache(daoProyecto.findById(id).get(), "delete");
+			
 			daoProyecto.deleteById(id);
 			exito = true;
 		}

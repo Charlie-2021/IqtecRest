@@ -23,6 +23,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.AssertFalse;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -74,14 +77,17 @@ public class Sede implements Serializable {
 	 @JoinTable 
 	  ( 
 	      name = "SEDE_CONTACTO" , 
-	      joinColumns = {  @JoinColumn ( name = "ID_SEDE" ,  referencedColumnName = "ID_SEDE" )  }, 
-	      inverseJoinColumns = {  @JoinColumn ( name = "ID_CONTACTO" , referencedColumnName = "ID_CONTACTO" ,  unique = true )  } 
+	      joinColumns = {  @JoinColumn ( name = "ID_SEDE" ,  referencedColumnName = "ID_SEDE" ) }, 
+	      inverseJoinColumns = {  @JoinColumn ( name = "ID_CONTACTO" , referencedColumnName = "ID_CONTACTO" ,  unique = true, insertable = true )  }
 	  ) 
 	@Singular
 	private List<Contacto> listaContactos;
-	
+	 
+	 
+	 
 	@ManyToOne(fetch = FetchType.EAGER, optional = false)
-	@JoinColumn(name = "ID_CLIENTE")
+	@OnDelete(action = OnDeleteAction.NO_ACTION)
+	@JoinColumn(name = "ID_CLIENTE", updatable = true, insertable = true)
 	private Cliente cliente;
 	
 	

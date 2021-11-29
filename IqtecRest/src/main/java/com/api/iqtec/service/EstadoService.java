@@ -1,5 +1,6 @@
 package com.api.iqtec.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +31,15 @@ public class EstadoService implements IEstadoService {
 	}
 
 	@Override
-	public Optional<Estado> findByNombreEstado(NombreEstado nombreEstado) {
+	public Optional<Estado> getByNombreEstado(NombreEstado nombreEstado) {
 		// TODO Auto-generated method stub
 		return daoEstado.findByNombreEstado(nombreEstado);
+	}
+
+	@Override
+	public List<Estado> findAll() {
+		// TODO Auto-generated method stub
+		return (List<Estado>) daoEstado.findAll();
 	}
 
 }
