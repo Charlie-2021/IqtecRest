@@ -88,11 +88,11 @@ public class Solicitud implements Serializable {
 	private List<Material> materiales;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "ID_PROYECTO")
+	@JoinColumn(name = "ID_PROYECTO", nullable = true, insertable = true)
 	private Proyecto proyecto;
 	
 	@ManyToOne(optional = false, fetch = FetchType.EAGER)
-	@JoinColumn(name = "ID_SEDE")
+	@JoinColumn(name = "ID_SEDE", nullable = false)
 	@NotNull
 	private Sede sede;
 	

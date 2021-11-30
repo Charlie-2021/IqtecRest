@@ -1,5 +1,6 @@
 package com.api.iqtec.controller;
 
+import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
@@ -31,8 +32,8 @@ public class ClienteController {
 
 	@Autowired IClienteService clienteService;
 	
-	@PostMapping("/crear")
-//	@PreAuthorize("hasRole('ADMINISTRADOR')")
+	@PostMapping(headers = "/crear")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@ApiOperation(value = "Crear cliente", notes = "Agregar un nuevo cliente a la base de datos.")
 	@ApiResponses(value = {
 			@ApiResponse(code = 201, message = "Created. El cliente fue insertado correctamente.", response = Cliente.class ),
@@ -70,6 +71,7 @@ public class ClienteController {
 		return response;
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping ("/actualizar")
 	@ApiOperation(value = "Actualizar cliente", notes = "Actualiza un cliente a la base de datos.")
 	@ApiResponses(value = {
@@ -89,6 +91,7 @@ public class ClienteController {
 		return new ResponseEntity<>(cliente,status);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping ("/eliminar/{id}")
 	@ApiOperation(value = "Eliminar cliente", notes = "Elimina un cliente pasandole el id a la base de datos.")
 	@ApiResponses(value = {

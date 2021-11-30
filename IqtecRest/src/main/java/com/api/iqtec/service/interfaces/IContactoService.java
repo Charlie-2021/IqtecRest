@@ -8,5 +8,7 @@ public interface IContactoService {
 
 	public boolean delete(Long id);
 	
+	public boolean update(Contacto contacto);
+	
 	public Optional<Contacto> findById (Long idContacto);
 }

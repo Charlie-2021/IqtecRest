@@ -4,9 +4,7 @@ package com.api.iqtec.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.api.iqtec.modelo.Usuario;
-import com.api.iqtec.redis.RedisUserUtility;
 import com.api.iqtec.repositorio.UsuarioRepository;
 import com.api.iqtec.service.interfaces.IUsuarioService;
 
@@ -19,8 +17,7 @@ public class UsuarioService implements IUsuarioService{
 
     @Autowired 
     UsuarioRepository daoUsuario;
-    @Autowired RedisUserUtility redisUtility;
-
+    
     @Override
     public Optional<Usuario> getByNombreUsuario(String nombreUsuario) {
 		// TODO Auto-generated method stub
@@ -42,9 +39,6 @@ public class UsuarioService implements IUsuarioService{
 		if(usuario.getId() == null ||!daoUsuario.existsById(usuario.getId()))
 		{
 			daoUsuario.save(usuario);
-			
-			redisUtility.updateRedisCache(daoUsuario.findByNombreUsuario(usuario.getNombreUsuario()).get(), "insert");
-			
 			exito = true;
 		}
 		return exito;
@@ -54,15 +48,7 @@ public class UsuarioService implements IUsuarioService{
     @Override
 	public List<Usuario> findAll() {
 		
-    	List<Usuario> transports = redisUtility.getValues();
-		
-		if(transports.size() < 1) {
-			transports = (List<Usuario>) daoUsuario.findAll();
-			
-			redisUtility.setValues(transports);
-		}
-		
-		return transports;
+		return (List<Usuario>) daoUsuario.findAll();
 	}
 
 
@@ -74,10 +60,6 @@ public class UsuarioService implements IUsuarioService{
 		if(daoUsuario.existsById(usuario.getId()))
 		{
 			daoUsuario.save(usuario);
-			
-			redisUtility.updateRedisCache(usuario, "update");
-
-			
 			exito = true;
 		}
 		return exito;
@@ -90,9 +72,6 @@ public class UsuarioService implements IUsuarioService{
 
 		if(daoUsuario.existsById(id))
 		{
-			redisUtility.updateRedisCache(daoUsuario.findById(id).get(), "delete");
-
-			
 			daoUsuario.deleteById(id);
 			exito = true;
 		}

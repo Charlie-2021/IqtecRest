@@ -51,9 +51,11 @@ import com.api.iqtec.service.interfaces.IUsuarioService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequestMapping("/data")
+@ApiIgnore
 public class DataCharger {
 
 	@Autowired IClienteService clienteService;
@@ -76,13 +78,7 @@ public class DataCharger {
 	
 	@Autowired IEstadoService estadoService;
 	
-	@PostMapping("/crear")/*
-	@ApiOperation(value = "Cargar datos", notes = "Carga los datos en la base de datos.")
-	@ApiResponses(value = {
-			@ApiResponse(code = 201, message = "Created. Los datos fueron insertados correctamente.", response = DataCharger.class ),
-			@ApiResponse(code = 404, message = "Bad Request. No se produce la insercion.", response = String.class),
-			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
-			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})  */
+	@PostMapping("/crear")
 	public ResponseEntity<String> datos (){
 
 
@@ -95,6 +91,9 @@ public class DataCharger {
 		Set<Rol> roles = new HashSet();
 		roles.add(rolAdmnid);
 		userAdmin.setRoles(roles);
+		userAdmin.getRoles().add(rolTecnico);
+		
+		userTecnico.getRoles().add(rolTecnico);
 		
 		Estado solicitado = Estado.builder().nombreEstado(NombreEstado.SOLICITADO).build();
 		Estado recibido = Estado.builder().nombreEstado(NombreEstado.RECIBIDO).build();
@@ -369,14 +368,6 @@ public class DataCharger {
 				sedeService.insert(sede1) && sedeService.insert(sede2) && sedeService.insert(sede3) && 
 				proyectoService.insert(proyecto) && solicitudService.insert(solicitud) && solicitudService.insert(solicitud2))
 			return new ResponseEntity<String> ("datos cargados corecctamente", HttpStatus.CREATED);
-//		
-//		if (clienteService.insert(cli1) && clienteService.insert(cli2))
-//			return new ResponseEntity<String> ("datos cargados corecctamente bien", HttpStatus.CREATED);
-//		
-//		if (sedeService.insert(sede1) && sedeService.insert(sede2) && sedeService.insert(sede3))
-//			return new ResponseEntity<String> ("datos cargados corecctamente", HttpStatus.CREATED);
-		
-		
 
 		return new ResponseEntity<String> ("Error al cargar datos", HttpStatus.NOT_FOUND);
 	}

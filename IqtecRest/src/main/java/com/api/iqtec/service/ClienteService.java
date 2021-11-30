@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.api.iqtec.modelo.Cliente;
-import com.api.iqtec.redis.RedisClientUtility;
 import com.api.iqtec.repositorio.ClienteRepository;
 import com.api.iqtec.service.interfaces.IClienteService;
 
@@ -15,22 +14,11 @@ import com.api.iqtec.service.interfaces.IClienteService;
 public class ClienteService implements IClienteService {
 
 	@Autowired ClienteRepository daoCliente;
-	
-	@Autowired RedisClientUtility redisClientUtility;
-	
-	
-	
+
 	@Override
 	public List<Cliente> findAll() {
 		
-		List<Cliente> clients = redisClientUtility.getValues();
-		
-		if(clients.size() < 1) {
-			clients = (List<Cliente>) daoCliente.findAll();
-			
-			redisClientUtility.setValues(clients);
-		}
-		return clients;
+		return  (List<Cliente>) daoCliente.findAll();
 	}
 
 	@Override
@@ -40,10 +28,7 @@ public class ClienteService implements IClienteService {
 		
 		if(cliente.getIdCliente() == null || !daoCliente.existsById(cliente.getIdCliente()))
 		{
-			daoCliente.save(cliente);
-			
-			redisClientUtility.updateRedisCache(daoCliente.findByRazonSocial(cliente.getRazonSocial()).get(), "insert");
-			
+			daoCliente.save(cliente);			
 			exito = true;
 		}
 		return exito;
@@ -56,10 +41,7 @@ public class ClienteService implements IClienteService {
 		
 		if(daoCliente.existsById(cliente.getIdCliente()))
 		{
-			daoCliente.save(cliente);
-			
-			redisClientUtility.updateRedisCache(cliente, "update");
-			
+			daoCliente.save(cliente);			
 			exito = true;
 		}
 		return exito;
@@ -72,10 +54,7 @@ public class ClienteService implements IClienteService {
 		
 		if(daoCliente.existsById(id))
 		{
-			redisClientUtility.updateRedisCache(daoCliente.findById(id).get(), "delete");
-			
 			daoCliente.deleteById(id);
-			
 			exito = true;
 		}
 		return exito;

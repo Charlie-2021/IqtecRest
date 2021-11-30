@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.api.iqtec.modelo.Proyecto;
-import com.api.iqtec.redis.RedisProjectUtility;
 import com.api.iqtec.repositorio.ProyectoRepository;
 import com.api.iqtec.service.interfaces.IProyectoService;
 
@@ -15,20 +14,10 @@ public class ProyectoService implements IProyectoService {
 
 	@Autowired ProyectoRepository daoProyecto;
 	
-	@Autowired RedisProjectUtility redisUtility;
-	
-	
 	@Override
 	public List<Proyecto> findAll() {
 		
-		List<Proyecto> projects = redisUtility.getValues();
-		
-		if(projects.size() < 1) {
-			projects = (List<Proyecto>) daoProyecto.findAll();
-			
-			redisUtility.setValues(projects);
-		}
-		return projects;
+		return (List<Proyecto>) daoProyecto.findAll();
 	}
 
 	@Override
@@ -39,9 +28,6 @@ public class ProyectoService implements IProyectoService {
 		if(proyecto.getIdProyecto()== null || !daoProyecto.existsById(proyecto.getIdProyecto()))
 		{
 			daoProyecto.save(proyecto);
-			
-			redisUtility.updateRedisCache(daoProyecto.findByNombre(proyecto.getNombre()).get(), "insert");
-			
 			exito = true;
 		}
 		return exito;
@@ -55,10 +41,6 @@ public class ProyectoService implements IProyectoService {
 		if(daoProyecto.existsById(proyecto.getIdProyecto()))
 		{
 			daoProyecto.save(proyecto);
-			
-			redisUtility.updateRedisCache(proyecto, "update");
-
-			
 			exito = true;
 		}
 		
@@ -72,9 +54,7 @@ public class ProyectoService implements IProyectoService {
 		
 		if(daoProyecto.existsById(id))
 		{
-			
-			redisUtility.updateRedisCache(daoProyecto.findById(id).get(), "delete");
-			
+
 			daoProyecto.deleteById(id);
 			exito = true;
 		}

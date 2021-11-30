@@ -47,6 +47,8 @@ public class SolicitudController {
 	@Autowired IUsuarioService userService;
 	@Autowired IEstadoService estadoService;
 	
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/crear")
 	@ApiOperation(value = "Crear solicitud", notes = "Agregar una nueva solicitud a la base de datos.")
 	@ApiResponses(value = {
@@ -59,6 +61,17 @@ public class SolicitudController {
 		
 		HttpStatus status = HttpStatus.CREATED;
 		
+		Usuario usuario = userService.getByNombreUsuario(solicitud.getSeguimientos().get(0).getUsuario().getNombreUsuario()).get();
+		
+		solicitud.getSeguimientos().get(0).setUsuario(usuario);
+		
+		if (solicitud.getProyecto().getIdProyecto() == -1) {
+			solicitud.setProyecto(null);
+		}
+		
+		System.out.println(solicitud);
+		
+		
 		if (!solicitudService.insert(solicitud))
 			status = HttpStatus.BAD_REQUEST;
 		
@@ -66,7 +79,7 @@ public class SolicitudController {
 		return new ResponseEntity<>(solicitud,status);
 	}
 	
-	@PreAuthorize(value = "hasRole('ROLE_ADMIN')")
+
 	@GetMapping ("/consultar")
 	@ApiOperation(value = "Consultar solicitudes", notes = "Consulta todas las solicitudes a la base de datos.")
 	@ApiResponses(value = {
@@ -86,6 +99,8 @@ public class SolicitudController {
 		return response;
 	}
 	
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping ("/actualizar")
 	@Transactional
 	@ApiOperation(value = "Actualizar solicitud", notes = "Actualiza una solicitud a la base de datos.")
@@ -106,6 +121,8 @@ public class SolicitudController {
 		return new ResponseEntity<>(solicitud,status);
 	}
 	
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping ("/eliminar/{id}")
 	@ApiOperation(value = "Eliminar solicitud", notes = "Elimina una solicitud pasandole el id a la base de datos.")
 	@ApiResponses(value = {

@@ -2,11 +2,13 @@ package com.api.iqtec.security.dto;
 
 import org.springframework.security.core.GrantedAuthority;
 
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.Collection;
 
@@ -15,6 +17,7 @@ public class JwtDto {
     private String token;
     private String bearer = "Bearer";
     private String nombreUsuario;
+    private Long idUsuario;
     private Collection<? extends GrantedAuthority> authorities;
 
     public JwtDto(String token, String nombreUsuario, Collection<? extends GrantedAuthority> authorities) {

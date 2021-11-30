@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +34,8 @@ public class SedeController {
 
 	@Autowired ISedeService sedeService;
 	
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/crear")
 	@ApiOperation(value = "Crear sede", notes = "Agregar una nueva sede a la base de datos.")
 	@ApiResponses(value = {
@@ -72,6 +75,8 @@ public class SedeController {
 		return response;
 	}
 	
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping ("/actualizar")
 	@ApiOperation(value = "Actualizar sede", notes = "Actualiza una sede a la base de datos.")
 	@ApiResponses(value = {
@@ -91,6 +96,8 @@ public class SedeController {
 		return new ResponseEntity<>(sede,status);
 	}
 	
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping ("/eliminar/{id}")
 	@ApiOperation(value = "Eliminar sede", notes = "Elimina una sede pasandole el id a la base de datos.")
 	@ApiResponses(value = {
@@ -109,6 +116,8 @@ public class SedeController {
 		return new ResponseEntity<>(id,status);
 		
 	}
+	
+	
 	
 	@GetMapping("/nombre/{nombre}")
 	@ApiOperation(value = "Buscar sede", notes = "Busca una sede pasandole el nombre a la base de datos.")

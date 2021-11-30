@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.api.iqtec.modelo.Cliente;
 import com.api.iqtec.modelo.Transporte;
 import com.api.iqtec.service.interfaces.ITransporteService;
 
@@ -34,6 +34,8 @@ public class TransporteController {
 	
 	@Autowired ITransporteService transporteService;
 	
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/crear")
 	@ApiOperation(value = "Crear transporte", notes = "Agregar un nuevo transporte a la base de datos.")
 	@ApiResponses(value = {
@@ -73,6 +75,8 @@ public class TransporteController {
 		return response;
 	}
 	
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping ("/actualizar")
 	@ApiOperation(value = "Actualizar transporte", notes = "Actualiza un transporte a la base de datos.")
 	@ApiResponses(value = {
@@ -92,6 +96,8 @@ public class TransporteController {
 		return new ResponseEntity<>(transporte,status);
 	}
 	
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping ("/eliminar/{id}")
 	@ApiOperation(value = "Eliminar transporte", notes = "Elimina un transporte pasandole el id a la base de datos.")
 	@ApiResponses(value = {

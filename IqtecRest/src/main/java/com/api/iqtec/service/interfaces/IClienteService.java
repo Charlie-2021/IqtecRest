@@ -8,7 +8,7 @@ import com.api.iqtec.modelo.Cliente;
 public interface IClienteService {
 
 	
-	public List<Cliente> findAll ();
+	public List<Cliente> findAll();
 	
 	public boolean insert(Cliente cliente);
 

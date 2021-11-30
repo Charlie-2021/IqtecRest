@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import com.api.iqtec.modelo.Cliente;
 import com.api.iqtec.modelo.Rol;
 import com.api.iqtec.modelo.Usuario;
 import com.api.iqtec.modelo.enums.RolNombre;
@@ -21,6 +23,9 @@ import com.api.iqtec.security.jwt.JwtProvider;
 import com.api.iqtec.service.RolService;
 import com.api.iqtec.service.UsuarioService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.List;
@@ -43,6 +48,8 @@ public class AuthController {
 
     @Autowired JwtProvider jwtProvider;
 
+    
+    
     @ApiOperation("Crea un nuevo usuario en la aplicacion.")
     @PostMapping("/nuevo")
     public ResponseEntity<?> nuevo(@Valid @RequestBody NuevoUsuario nuevoUsuario, BindingResult bindingResult){
@@ -117,4 +124,31 @@ public class AuthController {
 		
 		return response;
     }
+    
+    @DeleteMapping ("/eliminar/{username}")
+	@ApiOperation(value = "Eliminar Usuario", notes = "Elimina un usuario de la base de datos.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "OK. El cliente fue borrado correctamente.", response = Cliente.class ),
+			@ApiResponse(code = 404, message = "Not found. No se encuentra el cliente.", response = String.class),
+			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
+			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
+	public ResponseEntity<String> eliminarUsuario (@PathVariable String username)
+	{
+		HttpStatus status = HttpStatus.NOT_FOUND;
+		
+		
+		Optional<Usuario> a = usuarioService.getByNombreUsuario(username);
+		
+		if (a.isPresent()) {
+			if (usuarioService.delete(a.get().getId()))
+				status = HttpStatus.OK;
+		}
+		
+		
+		
+		
+		
+		return new ResponseEntity<>(username,status);
+		
+	}
 }

@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -50,7 +51,7 @@ public class Proyecto implements Serializable{
 	@ApiModelProperty(name = "Descripcion",notes = "Describe el proyecto", position = 1 )
 	private String descripcion;
 	
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	@JoinColumn(name = "ID_CLIENTE")
 	@NotNull
 	private Cliente cliente;

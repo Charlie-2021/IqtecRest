@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +34,7 @@ public class ProyectoController {
 	
 	@Autowired IProyectoService proyectoService;
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/crear")
 	@ApiOperation(value = "Crear proyecto", notes = "Agregar un nuevo proyecto a la base de datos.")
 	@ApiResponses(value = {
@@ -53,6 +55,7 @@ public class ProyectoController {
 	}
 	
 	
+
 	@GetMapping ("/consultar")
 	@ApiOperation(value = "Consultar proyectos", notes = "Consulta todos los proyectos a la base de datos.")
 	@ApiResponses(value = {
@@ -72,6 +75,8 @@ public class ProyectoController {
 		return response;
 	}
 	
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping ("/actualizar")
 	@ApiOperation(value = "Actualizar proyecto", notes = "Actualiza un proyecto a la base de datos.")
 	@ApiResponses(value = {
@@ -91,6 +96,8 @@ public class ProyectoController {
 		return new ResponseEntity<>(proyecto,status);
 	}
 	
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping ("/eliminar/{id}")
 	@ApiOperation(value = "Eliminar proyecto", notes = "Elimina un proyecto pasandole el id a la base de datos.")
 	@ApiResponses(value = {
