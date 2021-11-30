@@ -14,7 +14,7 @@ import com.api.iqtec.modelo.Tipo;
 import com.api.iqtec.service.interfaces.ITipoService;
 
 @RestController
-@CrossOrigin("/*")
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/tipo")
 public class TipoController {
 

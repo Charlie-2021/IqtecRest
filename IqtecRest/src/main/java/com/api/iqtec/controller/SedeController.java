@@ -47,7 +47,7 @@ public class SedeController {
 	{
 		
 		HttpStatus status = HttpStatus.CREATED;
-		
+		sede.setActivo(true);
 		if (!sedeService.insert(sede))
 			status = HttpStatus.BAD_REQUEST;
 		

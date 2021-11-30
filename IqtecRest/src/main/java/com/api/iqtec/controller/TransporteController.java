@@ -47,6 +47,7 @@ public class TransporteController {
 	{
 		
 		HttpStatus status = HttpStatus.CREATED;
+		transporte.setActivo(true);
 		
 		if (!transporteService.insert(transporte))
 			status = HttpStatus.BAD_REQUEST;

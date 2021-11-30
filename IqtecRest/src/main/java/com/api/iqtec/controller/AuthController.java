@@ -71,7 +71,7 @@ public class AuthController {
             roles.add(rolService.getByRolNombre(RolNombre.ROLE_ADMIN).get());
         
         usuario.setRoles(roles);
-        
+        usuario.setActivo(true);
         usuarioService.save(usuario);
         
         return new ResponseEntity<String>("USUARIO CREADO CORRECTAMENTE", HttpStatus.CREATED);
@@ -137,11 +137,14 @@ public class AuthController {
 		HttpStatus status = HttpStatus.NOT_FOUND;
 		
 		
-		Optional<Usuario> a = usuarioService.getByNombreUsuario(username);
+		Optional<Usuario> op = usuarioService.getByNombreUsuario(username);
 		
-		if (a.isPresent()) {
-			if (usuarioService.delete(a.get().getId()))
-				status = HttpStatus.OK;
+		if (op.isPresent()) {
+			Usuario user = op.get();
+			user.setActivo(false);
+			usuarioService.update(user);
+			status = HttpStatus.OK;
+				
 		}
 		
 		

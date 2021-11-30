@@ -76,4 +76,8 @@ public class Transporte implements Serializable{
 	  ) 
 	@Singular
 	private List<Contacto> listaContactos;
+	
+	 @Column(name = "ACTIVO")
+	 @ApiModelProperty(hidden = true)
+	 private boolean activo;
 }

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.api.iqtec.modelo.Cliente;
+import com.api.iqtec.modelo.Usuario;
 import com.api.iqtec.service.interfaces.IClienteService;
 import io.swagger.annotations.*;
 
@@ -44,6 +45,7 @@ public class ClienteController {
 	{
 		
 		HttpStatus status = HttpStatus.CREATED;
+		cliente.setActivo(true);
 		
 		if (!clienteService.insert(cliente))
 			status = HttpStatus.BAD_REQUEST;
@@ -105,8 +107,7 @@ public class ClienteController {
 		
 		if (!clienteService.delete(id))
 			status = HttpStatus.NOT_FOUND;
-		
-		
+			
 		return new ResponseEntity<>(id,status);
 		
 	}

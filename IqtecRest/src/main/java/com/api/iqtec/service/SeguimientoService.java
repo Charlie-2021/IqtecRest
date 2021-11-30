@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.api.iqtec.modelo.Sede;
 import com.api.iqtec.modelo.Seguimiento;
 import com.api.iqtec.repositorio.SeguimientoRepository;
 import com.api.iqtec.service.interfaces.ISeguimientoService;
@@ -28,6 +29,19 @@ public class SeguimientoService implements ISeguimientoService{
 		if(daoSeguimiento.existsById(seguimiento.getIdSeguimiento()))
 		{
 			daoSeguimiento.save(seguimiento);
+			exito = true;
+		}
+		return exito;
+	}
+
+	@Override
+	public boolean delete(Long id) {
+		
+		boolean exito = false;
+
+		if(daoSeguimiento.existsById(id))
+		{
+			daoSeguimiento.deleteById(id);
 			exito = true;
 		}
 		return exito;

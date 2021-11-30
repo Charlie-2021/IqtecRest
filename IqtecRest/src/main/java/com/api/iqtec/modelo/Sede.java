@@ -90,5 +90,7 @@ public class Sede implements Serializable {
 	@JoinColumn(name = "ID_CLIENTE", updatable = true, insertable = true)
 	private Cliente cliente;
 	
-	
+	 @Column(name = "ACTIVO")
+	 @ApiModelProperty(hidden = true)
+	 private boolean activo;
 }

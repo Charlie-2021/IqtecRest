@@ -29,6 +29,7 @@ import com.api.iqtec.modelo.Solicitud;
 import com.api.iqtec.modelo.Usuario;
 import com.api.iqtec.modelo.enums.NombreEstado;
 import com.api.iqtec.service.interfaces.IEstadoService;
+import com.api.iqtec.service.interfaces.ISeguimientoService;
 import com.api.iqtec.service.interfaces.ISolicitudService;
 import com.api.iqtec.service.interfaces.ITipoService;
 import com.api.iqtec.service.interfaces.IUsuarioService;
@@ -46,7 +47,7 @@ public class SolicitudController {
 	@Autowired ITipoService tipoServices;
 	@Autowired IUsuarioService userService;
 	@Autowired IEstadoService estadoService;
-	
+	@Autowired ISeguimientoService seguimientoService;
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/crear")
@@ -126,19 +127,26 @@ public class SolicitudController {
 	@DeleteMapping ("/eliminar/{id}")
 	@ApiOperation(value = "Eliminar solicitud", notes = "Elimina una solicitud pasandole el id a la base de datos.")
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Remove. La solicitud fue borrada correctamente.", response = Solicitud.class ),
+			@ApiResponse(code = 200, message = "Ok. La solicitud fue borrada correctamente.", response = Solicitud.class ),
 			@ApiResponse(code = 404, message = "Not found. No se encuentra la solicitud.", response = String.class),
 			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
 			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
 	public ResponseEntity<Long> eliminarSolicitud (@PathVariable Long id)
 	{
-		HttpStatus status = HttpStatus.OK;
+	
+	
+		Solicitud solicitud = solicitudService.findById(id).get();
 		
-		if (!solicitudService.delete(id))
-			status = HttpStatus.NOT_FOUND;
+		if(solicitud.getSeguimientos().size() != 1) {
+			return new ResponseEntity<>(-1L, HttpStatus.NOT_FOUND);
 		
+		} else {
+			
+			if (!solicitudService.delete(id))
+				return new ResponseEntity<>(-1L, HttpStatus.NOT_FOUND);
+		}
 		
-		return new ResponseEntity<>(id,status);
+		return new ResponseEntity<>(id,HttpStatus.OK);
 		
 	}
 	

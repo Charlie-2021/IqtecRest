@@ -16,6 +16,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,9 +48,9 @@ public class Seguimiento implements Serializable{
 	@ApiModelProperty(hidden = true)
 	private Long idSeguimiento;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne()
 	@JoinColumn(name = "ID_ESTADO")
-	@NotNull
+	@OnDelete(action = OnDeleteAction.NO_ACTION)
 	private Estado estado;
 	
 	@Column(name = "FECHA")

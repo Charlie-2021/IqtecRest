@@ -17,4 +17,6 @@ public interface IClienteService {
 	public boolean delete(Long id);
 	
 	public Optional<Cliente> findByNombre (String nombre);
+	
+	public Optional<Cliente> findById (Long id);
 }

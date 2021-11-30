@@ -10,5 +10,5 @@ public interface ISeguimientoService {
 	
 	public boolean update(Seguimiento seguimiento);
 
-
+	public boolean delete(Long id);
 }

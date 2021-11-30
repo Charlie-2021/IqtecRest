@@ -22,6 +22,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.api.iqtec.modelo.enums.NombreEstado;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -81,7 +84,7 @@ public class Solicitud implements Serializable {
 	  ( 
 	      name = "MATERIAL_SOLICITUD" , 
 	      joinColumns = {  @JoinColumn ( name = "ID_SOLICITUD" ,  referencedColumnName = "ID_SOLICITUD" )  }, 
-	      inverseJoinColumns = {  @JoinColumn ( name = "ID_MATERIAL" , referencedColumnName = "ID_MATERIAL" ,  unique = true ) }
+	      inverseJoinColumns = {  @JoinColumn ( name = "ID_MATERIAL" , referencedColumnName = "ID_MATERIAL" ,nullable = true,updatable = true,  unique = true ) }
 	      
 	  ) 
 	@Singular
@@ -111,7 +114,7 @@ public class Solicitud implements Serializable {
 	  ( 
 	      name = "SEGUIMIENTO_SOLICITUD" , 
 	      joinColumns = {  @JoinColumn ( name = "ID_SOLICITUD" ,  referencedColumnName = "ID_SOLICITUD" )  }, 
-	      inverseJoinColumns = {  @JoinColumn ( name = "ID_SEGUIMIENTO" , referencedColumnName = "ID_SEGUIMIENTO" ,  unique = true ) }
+	      inverseJoinColumns = {  @JoinColumn ( name = "ID_SEGUIMIENTO" , referencedColumnName = "ID_SEGUIMIENTO" , nullable = true,updatable = true, unique = true ) }
 	      
 	  ) 
 	@Singular

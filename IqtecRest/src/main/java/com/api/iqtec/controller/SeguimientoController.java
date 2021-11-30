@@ -39,11 +39,12 @@ public class SeguimientoController {
 	}
 
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+
 	@PutMapping("/actualizar")
 	public ResponseEntity<Seguimiento> putSeguimientos(@RequestBody Seguimiento seguimiento){
 
 		HttpStatus status = HttpStatus.ACCEPTED;
+	
 
 		if (!seguimientoService.update(seguimiento))
 			status = HttpStatus.BAD_REQUEST;

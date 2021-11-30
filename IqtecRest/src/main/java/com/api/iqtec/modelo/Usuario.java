@@ -3,6 +3,7 @@ package com.api.iqtec.modelo;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -50,5 +51,8 @@ public class Usuario {
         this.password = password;
     }
     
-    
+
+    @Column(name = "ACTIVO")
+    @ApiModelProperty(hidden = true)
+    private boolean activo;
 }

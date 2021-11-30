@@ -55,4 +55,8 @@ public class Proyecto implements Serializable{
 	@JoinColumn(name = "ID_CLIENTE")
 	@NotNull
 	private Cliente cliente;
+	
+	 @Column(name = "ACTIVO")
+	 @ApiModelProperty(hidden = true)
+	 private boolean activo;
 }

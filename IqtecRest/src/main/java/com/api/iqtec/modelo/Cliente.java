@@ -20,6 +20,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
@@ -82,4 +83,7 @@ public class Cliente implements Serializable{
 	@Singular
 	private List<Contacto> listaContactos;
 	
+	 @Column(name = "ACTIVO")
+	 @ApiModelProperty(hidden = true)
+	 private boolean activo = true;
 }

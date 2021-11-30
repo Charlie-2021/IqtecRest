@@ -46,6 +46,7 @@ public class ProyectoController {
 	{
 		
 		HttpStatus status = HttpStatus.CREATED;
+		proyecto.setActivo(true);
 		
 		if (!proyectoService.insert(proyecto))
 			status = HttpStatus.BAD_REQUEST;

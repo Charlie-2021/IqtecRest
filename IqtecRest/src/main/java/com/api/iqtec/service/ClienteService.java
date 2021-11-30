@@ -65,6 +65,12 @@ public class ClienteService implements IClienteService {
 		return daoCliente.findByRazonSocial(razonSocial);
 	}
 
+	@Override
+	public Optional<Cliente> findById(Long id) {
+		// TODO Auto-generated method stub
+		return daoCliente.findById(id);
+	}
+
 
 
 }
