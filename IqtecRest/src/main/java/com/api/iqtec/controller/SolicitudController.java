@@ -223,7 +223,7 @@ public class SolicitudController {
 				seguimiento.setEstado(estado);
 				break;
 			default:
-				return new ResponseEntity<String>("La solicitud ya esta finalizada",status);
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
 			
 			solicitud.getSeguimientos().add(seguimiento);

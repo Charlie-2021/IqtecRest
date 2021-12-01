@@ -41,7 +41,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 public class AuthController {
 
     @Autowired PasswordEncoder passwordEncoder;
@@ -81,7 +81,7 @@ public class AuthController {
         usuario.setActivo(true);
         usuarioService.save(usuario);
         
-        return new ResponseEntity<String>("USUARIO CREADO CORRECTAMENTE", HttpStatus.CREATED);
+        return new ResponseEntity<>(usuario, HttpStatus.CREATED);
     }
 
     @ApiOperation("Si el usuario es valido devuelve un Json Web Token.")

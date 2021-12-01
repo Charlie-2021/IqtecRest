@@ -129,7 +129,7 @@ public class TransporteController {
 			transporte = op.get();
 			List<Solicitud> solicitudes = solicitudService.findAll();
 
-			if (solicitudes.stream().anyMatch(s-> s.getTransporte().getId()== id)) {
+			if (solicitudes.stream().anyMatch(s-> s.getTransporte().getId() == id)) {
 				transporte.setActivo(false);
 				transporteService.update(transporte);
 				return new ResponseEntity<>(id, HttpStatus.OK);

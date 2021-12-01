@@ -2,6 +2,7 @@ package com.api.iqtec.controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -132,9 +133,9 @@ public class ProyectoController {
 			proyecto = op.get();
 			List<Solicitud> solicitudes = solicitudService.findAll();
 			
+			List<Solicitud> conProyecto =solicitudes.stream().filter(s-> s.getProyecto() != null).collect(Collectors.toList());
 			
-			
-			if (solicitudes.stream().anyMatch(s-> s.getProyecto().getIdProyecto() == id)) {
+			if (conProyecto.stream().anyMatch(s-> s.getProyecto().equals(proyecto))) {
 				proyecto.setActivo(false);
 				proyectoService.update(proyecto);
 				return new ResponseEntity<>(id, HttpStatus.OK);
