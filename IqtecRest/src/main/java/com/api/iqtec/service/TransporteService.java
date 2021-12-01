@@ -66,4 +66,10 @@ public class TransporteService implements ITransporteService {
 		return daoTransporte.findByNombre(nombre);
 	}
 
+	@Override
+	public Optional<Transporte> findById(Long id) {
+		// TODO Auto-generated method stub
+		return daoTransporte.findById(id);
+	}
+
 }

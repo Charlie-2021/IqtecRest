@@ -135,6 +135,7 @@ public class DataCharger {
 						.telefono1("654789213")
 						.telefono2("911515151")
 						.build())
+				.activo(true)
 				.build();
 
 		Transporte trans2 = Transporte.builder()
@@ -153,6 +154,7 @@ public class DataCharger {
 						.telefono1("654789213")
 						.telefono2("911515151")
 						.build())
+				.activo(true)
 				.build();
 
 		
@@ -178,6 +180,7 @@ public class DataCharger {
 						.email("email1@gmail.com")
 						.telefono1("666333666")
 						.build())
+				.activo(true)
 				.build();
 
 		Cliente cli2 = Cliente.builder()
@@ -205,6 +208,7 @@ public class DataCharger {
 						.email("javidelgado@gmail.com")
 						.telefono1("655655333")
 						.build())
+				.activo(true)
 				.build();
 		
 		
@@ -225,6 +229,7 @@ public class DataCharger {
 						.telefono2("911911231")
 						.build())
 				.cliente(cli2)
+				.activo(true)
 				.build();
 
 		Sede sede2 = Sede.builder()
@@ -244,10 +249,11 @@ public class DataCharger {
 						.telefono2("911141232")
 						.build())
 				.cliente(cli1)
+				.activo(true)
 				.build();
 		
 		Sede sede3 = Sede.builder()
-				.nombre("SEDE 3")
+				.nombre("SEDE PRUEBA")
 				.cif("255151415")
 				.direccion(Direccion.builder()
 						.calle("calle sede 3")
@@ -263,12 +269,14 @@ public class DataCharger {
 						.telefono2("94502515")
 						.build())
 				.cliente(cli2)
+				.activo(true)
 				.build();
 		
 		Proyecto proyecto = Proyecto.builder()
 				.nombre("CISCO")
 				.cliente(cli1)
 				.descripcion("Hacer recuento por cajas o palets, puede venir de las dos maneras. Pesar en recepcion y reciclar por separado")
+				.activo(true)
 				.build();
 				
 		Solicitud solicitud = Solicitud.builder()
@@ -277,7 +285,7 @@ public class DataCharger {
 				.horario("09:00")
 				.comentTransporte("Se requiere vehiculo con elevador. Hay control de acceso.")
 				.proyecto(proyecto)
-				.sede(sede3)
+				.sede(sede2)
 				.transporte(trans1)
 				.seguimiento(Seguimiento.builder()
 						.estado(solicitado)

@@ -19,9 +19,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.api.iqtec.modelo.Cliente;
 import com.api.iqtec.modelo.Sede;
+import com.api.iqtec.modelo.Solicitud;
 import com.api.iqtec.service.interfaces.ISedeService;
+import com.api.iqtec.service.interfaces.ISolicitudService;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -33,6 +34,7 @@ import io.swagger.annotations.ApiResponses;
 public class SedeController {
 
 	@Autowired ISedeService sedeService;
+	@Autowired ISolicitudService solicitudService;
 	
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -45,12 +47,21 @@ public class SedeController {
 			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
 	public ResponseEntity<Sede> insertarSede (@Valid @RequestBody Sede sede)
 	{
-		
 		HttpStatus status = HttpStatus.CREATED;
-		sede.setActivo(true);
-		if (!sedeService.insert(sede))
-			status = HttpStatus.BAD_REQUEST;
 		
+		Optional<Sede> op = sedeService.findByNombre(sede.getNombre());
+		
+		if (op.isPresent()) {
+			Sede sedeNoActiva = op.get();
+			sede.setActivo(true);
+			sede.setIdSede(sedeNoActiva.getIdSede());
+			sedeService.update(sede);
+			
+		} else {
+			sede.setActivo(true);
+			if (!sedeService.insert(sede))
+				status = HttpStatus.BAD_REQUEST;
+		}
 		
 		return new ResponseEntity<>(sede,status);
 	}
@@ -64,15 +75,12 @@ public class SedeController {
 			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
 	public ResponseEntity<List<Sede>> obtenerSedes ()
 	{
-		ResponseEntity<List<Sede>> response;
+
 		List<Sede> todos;
-		
 		todos = sedeService.findAll();
 		
-		response = new ResponseEntity<>(todos,HttpStatus.OK);
-		
-		
-		return response;
+		return new ResponseEntity<List<Sede>>(todos,HttpStatus.OK);
+	
 	}
 	
 	
@@ -109,11 +117,29 @@ public class SedeController {
 	{
 		HttpStatus status = HttpStatus.OK;
 		
-		if (!sedeService.delete(id))
-			status = HttpStatus.NOT_FOUND;
+		Optional<Sede> op = sedeService.findById(id);
+		Sede sede;
 		
 		
-		return new ResponseEntity<>(id,status);
+		if (op.isPresent()) {
+			sede = op.get();
+			List<Solicitud> solicitudes = solicitudService.findAll();
+			
+			if (solicitudes.stream().anyMatch(s-> s.getSede().getIdSede() == id)) {
+				sede.setActivo(false);
+				sedeService.update(sede);
+				return new ResponseEntity<>(id, HttpStatus.OK);
+			} else {
+				if (!sedeService.delete(id))
+					return new ResponseEntity<>(-1L, HttpStatus.NOT_FOUND);
+			}
+			
+		} else {
+			
+			return new ResponseEntity<>(-1L, HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<>(id, HttpStatus.OK);
 		
 	}
 	

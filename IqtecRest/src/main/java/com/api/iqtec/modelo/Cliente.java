@@ -72,7 +72,7 @@ public class Cliente implements Serializable{
 	@Embedded
 	private Direccion direccion;
 	
-	 @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	 @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	 @JoinTable 
 	  ( 
 	      name = "CLIENTE_CONTACTO" , 
@@ -85,5 +85,5 @@ public class Cliente implements Serializable{
 	
 	 @Column(name = "ACTIVO")
 	 @ApiModelProperty(hidden = true)
-	 private boolean activo = true;
+	 private boolean activo;
 }

@@ -66,4 +66,10 @@ public class SedeService implements ISedeService {
 		return daoSede.findByNombre(nombre);
 	}
 
+	@Override
+	public Optional<Sede> findById(Long id) {
+		// TODO Auto-generated method stub
+		return daoSede.findById(id);
+	}
+
 }

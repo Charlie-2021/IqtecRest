@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +24,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.api.iqtec.modelo.Cliente;
+import com.api.iqtec.modelo.Proyecto;
+import com.api.iqtec.modelo.Sede;
+import com.api.iqtec.modelo.Solicitud;
 import com.api.iqtec.modelo.Usuario;
 import com.api.iqtec.service.interfaces.IClienteService;
+import com.api.iqtec.service.interfaces.IProyectoService;
+import com.api.iqtec.service.interfaces.ISedeService;
+import com.api.iqtec.service.interfaces.ISolicitudService;
+
 import io.swagger.annotations.*;
 
 @RestController
@@ -33,8 +42,14 @@ public class ClienteController {
 
 	@Autowired IClienteService clienteService;
 	
-	@PostMapping(headers = "/crear")
+	@Autowired ISedeService sedeService;
+	
+	@Autowired ISolicitudService solicitudService;
+	
+	@Autowired IProyectoService proyectoService;
+	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PostMapping("/crear")
 	@ApiOperation(value = "Crear cliente", notes = "Agregar un nuevo cliente a la base de datos.")
 	@ApiResponses(value = {
 			@ApiResponse(code = 201, message = "Created. El cliente fue insertado correctamente.", response = Cliente.class ),
@@ -43,13 +58,21 @@ public class ClienteController {
 			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
 	public ResponseEntity<Cliente> insertarCliente (@Valid @RequestBody Cliente cliente)
 	{
-		
 		HttpStatus status = HttpStatus.CREATED;
-		cliente.setActivo(true);
 		
-		if (!clienteService.insert(cliente))
-			status = HttpStatus.BAD_REQUEST;
+		Optional<Cliente> op = clienteService.findByNombre(cliente.getRazonSocial());
 		
+		if (op.isPresent()) {
+			Cliente clienteNoActivo = op.get();
+			cliente.setActivo(true);
+			cliente.setIdCliente(clienteNoActivo.getIdCliente());
+			clienteService.update(cliente);
+			
+		} else {
+			cliente.setActivo(true);
+			if (!clienteService.insert(cliente))
+				status = HttpStatus.BAD_REQUEST;
+		}
 		
 		return new ResponseEntity<>(cliente,status);
 	}
@@ -65,9 +88,8 @@ public class ClienteController {
 		ResponseEntity<List<Cliente>> response;
 		List<Cliente> todos;
 		
-		todos = clienteService.findAll();
-		
-		response = new ResponseEntity<>(todos,HttpStatus.OK);
+		todos = clienteService.findAll();	
+		response = new ResponseEntity<>(todos, HttpStatus.OK);
 		
 		
 		return response;
@@ -103,12 +125,36 @@ public class ClienteController {
 			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
 	public ResponseEntity<Long> eliminarCliente (@PathVariable Long id)
 	{
-		HttpStatus status = HttpStatus.OK;
+
+		Optional<Cliente> op = clienteService.findById(id);
 		
-		if (!clienteService.delete(id))
-			status = HttpStatus.NOT_FOUND;
+		if(op.isPresent()) 
+		{
 			
-		return new ResponseEntity<>(id,status);
+			Cliente cliente = op.get();
+			
+			List<Sede> sedes = sedeService.findAll();
+			List<Solicitud> solicitudes = solicitudService.findAll();
+			List<Proyecto> proyectos = proyectoService.findAll();
+			
+		
+			
+			if (sedes.stream().anyMatch(s -> s.getCliente().getIdCliente() == id) || solicitudes.stream().anyMatch(s-> s.getSede().getCliente().getIdCliente()== id)
+					|| proyectos.stream().anyMatch(p-> p.getCliente().getIdCliente() == id)) {
+				cliente.setActivo(false);
+				clienteService.update(cliente);
+				return new ResponseEntity<>(id, HttpStatus.OK);
+			} else {
+				
+				if (!clienteService.delete(id))
+					return new ResponseEntity<>(-1L, HttpStatus.NOT_FOUND);
+			}		 
+			 
+		} else {
+			return new ResponseEntity<>(-1L, HttpStatus.NOT_FOUND);
+		}
+			
+		return new ResponseEntity<>(id, HttpStatus.OK);
 		
 	}
 	

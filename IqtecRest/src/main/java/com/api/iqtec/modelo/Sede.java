@@ -73,7 +73,7 @@ public class Sede implements Serializable {
 	@Embedded
 	private Direccion direccion;
 	
-	 @OneToMany(cascade = CascadeType.ALL)
+	 @OneToMany(cascade = CascadeType.ALL,  orphanRemoval = true)
 	 @JoinTable 
 	  ( 
 	      name = "SEDE_CONTACTO" , 

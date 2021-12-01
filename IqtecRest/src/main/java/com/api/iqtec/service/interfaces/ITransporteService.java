@@ -3,6 +3,7 @@ package com.api.iqtec.service.interfaces;
 import java.util.List;
 import java.util.Optional;
 
+import com.api.iqtec.modelo.Cliente;
 import com.api.iqtec.modelo.Transporte;
 
 public interface ITransporteService {
@@ -16,4 +17,6 @@ public interface ITransporteService {
 	public boolean delete(Long id);
 	
 	public Optional<Transporte> findByNombre (String nombre);
+	
+	public Optional<Transporte> findById (Long id);
 }

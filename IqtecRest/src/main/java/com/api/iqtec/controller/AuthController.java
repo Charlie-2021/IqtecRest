@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import com.api.iqtec.modelo.Cliente;
 import com.api.iqtec.modelo.Rol;
+import com.api.iqtec.modelo.Seguimiento;
+import com.api.iqtec.modelo.Solicitud;
+import com.api.iqtec.modelo.Transporte;
 import com.api.iqtec.modelo.Usuario;
 import com.api.iqtec.modelo.enums.RolNombre;
 import com.api.iqtec.security.dto.JwtDto;
@@ -22,6 +25,9 @@ import com.api.iqtec.security.dto.NuevoUsuario;
 import com.api.iqtec.security.jwt.JwtProvider;
 import com.api.iqtec.service.RolService;
 import com.api.iqtec.service.UsuarioService;
+import com.api.iqtec.service.interfaces.ISeguimientoService;
+import com.api.iqtec.service.interfaces.ISolicitudService;
+
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -48,6 +54,7 @@ public class AuthController {
 
     @Autowired JwtProvider jwtProvider;
 
+    @Autowired ISeguimientoService seguimientoService;
     
     
     @ApiOperation("Crea un nuevo usuario en la aplicacion.")
@@ -81,8 +88,18 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<JwtDto> login(@Valid @RequestBody LoginUsuario loginUsuario, BindingResult bindingResult){
         
+    	
+    	
+    	
     	if(bindingResult.hasErrors())
             return new ResponseEntity("ERROR", HttpStatus.BAD_REQUEST);
+    	
+    	if (usuarioService.existsByNombreUsuario(loginUsuario.getNombreUsuario())) {
+    		Usuario u = usuarioService.getByNombreUsuario(loginUsuario.getNombreUsuario()).get();
+    		if(!u.isActivo())
+    			 return new ResponseEntity("El usuario no exite", HttpStatus.BAD_REQUEST);
+    			
+    	}
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUsuario.getNombreUsuario(), loginUsuario.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -103,8 +120,9 @@ public class AuthController {
     	ResponseEntity<List<Usuario>> response;
 		List<Usuario> todos;
 		
-		todos = usuarioService.findAll();
 		
+		todos = usuarioService.findAll();
+		System.out.println(todos.toString());
 		return new ResponseEntity<>(todos,HttpStatus.OK);
     }
 
@@ -134,24 +152,29 @@ public class AuthController {
 			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
 	public ResponseEntity<String> eliminarUsuario (@PathVariable String username)
 	{
-		HttpStatus status = HttpStatus.NOT_FOUND;
+    	
+    	Optional<Usuario> op = usuarioService.getByNombreUsuario(username);
+		Usuario usuario;
 		
-		
-		Optional<Usuario> op = usuarioService.getByNombreUsuario(username);
 		
 		if (op.isPresent()) {
-			Usuario user = op.get();
-			user.setActivo(false);
-			usuarioService.update(user);
-			status = HttpStatus.OK;
-				
+			usuario = op.get();
+			List<Seguimiento> seg = seguimientoService.findAll();
+
+			
+			if (seg.stream().anyMatch(s-> s.getUsuario().getId()== usuario.getId())) {
+				usuario.setActivo(false);
+				usuarioService.update(usuario);
+				return new ResponseEntity<>(username, HttpStatus.OK);
+			} else {
+				if (!usuarioService.delete(usuario.getId()))
+					return new ResponseEntity<>("0", HttpStatus.NOT_FOUND);
+			}
+		} else {
+			return new ResponseEntity<>("0", HttpStatus.NOT_FOUND);
 		}
 		
-		
-		
-		
-		
-		return new ResponseEntity<>(username,status);
+		return new ResponseEntity<>(username, HttpStatus.OK);
 		
 	}
 }

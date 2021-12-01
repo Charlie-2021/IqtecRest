@@ -19,7 +19,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.api.iqtec.modelo.Sede;
+import com.api.iqtec.modelo.Solicitud;
 import com.api.iqtec.modelo.Transporte;
+import com.api.iqtec.service.interfaces.ISolicitudService;
 import com.api.iqtec.service.interfaces.ITransporteService;
 
 import io.swagger.annotations.ApiOperation;
@@ -33,7 +36,7 @@ public class TransporteController {
 
 	
 	@Autowired ITransporteService transporteService;
-	
+	@Autowired ISolicitudService solicitudService;
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/crear")
@@ -47,13 +50,23 @@ public class TransporteController {
 	{
 		
 		HttpStatus status = HttpStatus.CREATED;
-		transporte.setActivo(true);
 		
-		if (!transporteService.insert(transporte))
-			status = HttpStatus.BAD_REQUEST;
+		Optional<Transporte> op = transporteService.findByNombre(transporte.getNombre());
 		
+		if (op.isPresent()) {
+			Transporte transNoActivo = op.get();
+			transporte.setActivo(true);
+			transporte.setId(transNoActivo.getId());
+			transporteService.update(transporte);
+			
+		} else {
+			transporte.setActivo(true);
+			if (!transporteService.insert(transporte))
+				status = HttpStatus.BAD_REQUEST;
+		}
 		
 		return new ResponseEntity<>(transporte,status);
+
 	}
 	
 	
@@ -69,11 +82,9 @@ public class TransporteController {
 		List<Transporte> todos;
 		
 		todos = transporteService.findAll();
+
 		
-		response = new ResponseEntity<>(todos,HttpStatus.OK);
-		
-		
-		return response;
+		return  new ResponseEntity<List<Transporte>>(todos,HttpStatus.OK);
 	}
 	
 	
@@ -108,13 +119,29 @@ public class TransporteController {
 			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
 	public ResponseEntity<Long> eliminarTransporte (@PathVariable Long id)
 	{
-		HttpStatus status = HttpStatus.OK;
-		
-		if (!transporteService.delete(id))
-			status = HttpStatus.NOT_FOUND;
 		
 		
-		return new ResponseEntity<>(id,status);
+		Optional<Transporte> op = transporteService.findById(id);
+		Transporte transporte;
+		
+		
+		if (op.isPresent()) {
+			transporte = op.get();
+			List<Solicitud> solicitudes = solicitudService.findAll();
+
+			if (solicitudes.stream().anyMatch(s-> s.getTransporte().getId()== id)) {
+				transporte.setActivo(false);
+				transporteService.update(transporte);
+				return new ResponseEntity<>(id, HttpStatus.OK);
+			} else {
+				if (!transporteService.delete(id))
+					return new ResponseEntity<>(-1L, HttpStatus.NOT_FOUND);
+			}
+		} else {
+			return new ResponseEntity<>(-1L, HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<>(id, HttpStatus.OK);
 		
 	}
 	

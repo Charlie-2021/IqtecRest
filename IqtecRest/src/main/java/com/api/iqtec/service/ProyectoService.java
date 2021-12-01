@@ -1,6 +1,7 @@
 package com.api.iqtec.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,6 +61,12 @@ public class ProyectoService implements IProyectoService {
 		}
 		
 		return exito;	
+	}
+
+	@Override
+	public Optional<Proyecto> findById(Long id) {
+		// TODO Auto-generated method stub
+		return daoProyecto.findById(id);
 	}
 
 }

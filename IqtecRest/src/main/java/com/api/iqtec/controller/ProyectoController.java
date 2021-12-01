@@ -1,6 +1,7 @@
 package com.api.iqtec.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -20,7 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.api.iqtec.modelo.Cliente;
 import com.api.iqtec.modelo.Proyecto;
+import com.api.iqtec.modelo.Sede;
+import com.api.iqtec.modelo.Solicitud;
 import com.api.iqtec.service.interfaces.IProyectoService;
+import com.api.iqtec.service.interfaces.ISolicitudService;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -33,6 +37,7 @@ public class ProyectoController {
 
 	
 	@Autowired IProyectoService proyectoService;
+	@Autowired ISolicitudService solicitudService;
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/crear")
@@ -46,11 +51,20 @@ public class ProyectoController {
 	{
 		
 		HttpStatus status = HttpStatus.CREATED;
-		proyecto.setActivo(true);
 		
-		if (!proyectoService.insert(proyecto))
-			status = HttpStatus.BAD_REQUEST;
+		Optional<Proyecto> op = proyectoService.findById(proyecto.getIdProyecto());
 		
+		if (op.isPresent()) {
+			Proyecto noActivo = op.get();
+			proyecto.setActivo(true);
+			proyecto.setIdProyecto(noActivo.getIdProyecto());
+			proyectoService.update(proyecto);
+			
+		} else {
+			proyecto.setActivo(true);
+			if (!proyectoService.insert(proyecto))
+				status = HttpStatus.BAD_REQUEST;
+		}
 		
 		return new ResponseEntity<>(proyecto,status);
 	}
@@ -110,11 +124,31 @@ public class ProyectoController {
 	{
 		HttpStatus status = HttpStatus.OK;
 		
-		if (!proyectoService.delete(id))
-			status = HttpStatus.NOT_FOUND;
+		Optional<Proyecto> op = proyectoService.findById(id);
+		Proyecto proyecto;
 		
 		
-		return new ResponseEntity<>(id,status);
+		if (op.isPresent()) {
+			proyecto = op.get();
+			List<Solicitud> solicitudes = solicitudService.findAll();
+			
+			
+			
+			if (solicitudes.stream().anyMatch(s-> s.getProyecto().getIdProyecto() == id)) {
+				proyecto.setActivo(false);
+				proyectoService.update(proyecto);
+				return new ResponseEntity<>(id, HttpStatus.OK);
+			} else {
+				if (!proyectoService.delete(id))
+					return new ResponseEntity<>(-1L, HttpStatus.NOT_FOUND);
+			}
+			
+		} else {
+			
+			return new ResponseEntity<>(-1L, HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<>(id, HttpStatus.OK);
 		
 	}
 }
