@@ -54,7 +54,7 @@ public class Seguimiento implements Serializable{
 	private Estado estado;
 	
 	@Column(name = "FECHA")
-	@ApiModelProperty(name = "Fecha",notes = "inserta la fecha de seguimiento", position = 0 )
+	@ApiModelProperty(name = "Fecha",notes = "Inserta la fecha de seguimiento", position = 0 )
 	private LocalDateTime fecha;
 
 	@OneToOne

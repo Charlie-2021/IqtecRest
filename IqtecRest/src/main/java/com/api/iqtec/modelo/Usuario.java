@@ -27,15 +27,18 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     @Column(name = "ID_USUARIO")
+	@ApiModelProperty(hidden = true)
     private Long id;
 
     
     @NotNull
     @Column(unique = true)
+	@ApiModelProperty(name = "Nombre",notes = "Nombre del usuario",required = true, position = 0 )
     private String nombreUsuario;
 
     
     @NotNull
+    @ApiModelProperty(name = "Password",notes = "Indica el password",required = true, position = 1 )
     private String password;
     
     @NotNull

@@ -10,8 +10,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.api.iqtec.modelo.Solicitud;
 import com.api.iqtec.modelo.Tipo;
 import com.api.iqtec.service.interfaces.ITipoService;
+
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -21,6 +26,11 @@ public class TipoController {
 	@Autowired ITipoService tipoService;
 	
 	@GetMapping("/consultar")
+	@ApiOperation(value = "Consultar Tipos", notes = "Consulta todos los tipos a la base de datos.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "find. Los tipos fueron encontradas correctamente.", response = Tipo.class ),
+			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
+			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
 	public ResponseEntity<List<Tipo>> obtenerTodosTipos(){
 
 		List<Tipo> tipos = tipoService.findAll();

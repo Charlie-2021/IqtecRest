@@ -66,7 +66,7 @@ public class Sede implements Serializable {
 	@Column(unique = true, name = "CIF", length = 25)
 	@NonNull
 	@NotNull
-	@ApiModelProperty(name = "Cif",notes = "inserta el Cif de la sede",required = true, position = 1 )
+	@ApiModelProperty(name = "Cif",notes = "Inserta el Cif de la sede",required = true, position = 1 )
 	private String cif;
 	
 	

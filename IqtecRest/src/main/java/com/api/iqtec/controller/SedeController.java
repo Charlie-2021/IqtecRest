@@ -70,7 +70,7 @@ public class SedeController {
 	@GetMapping ("/consultar")
 	@ApiOperation(value = "Consultar sedes", notes = "Consulta todas las sedes a la base de datos.")
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "find. Las sedes fueron encontradas correctamente.", response = Sede.class ),
+			@ApiResponse(code = 200, message = "Find. Las sedes fueron encontradas correctamente.", response = Sede.class ),
 			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
 			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
 	public ResponseEntity<List<Sede>> obtenerSedes ()
@@ -88,7 +88,7 @@ public class SedeController {
 	@PutMapping ("/actualizar")
 	@ApiOperation(value = "Actualizar sede", notes = "Actualiza una sede a la base de datos.")
 	@ApiResponses(value = {
-			@ApiResponse(code = 202, message = "modify. La sede fue modificada correctamente.", response = Sede.class ),
+			@ApiResponse(code = 202, message = "Modify. La sede fue modificada correctamente.", response = Sede.class ),
 			@ApiResponse(code = 400, message = "Bad Request. No se ha modificado la sede.", response = String.class),
 			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
 			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})

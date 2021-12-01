@@ -51,7 +51,7 @@ public class Material implements Serializable {
 	
 	@NotNull
 	@Column(name = "CANTIDAD")
-	@ApiModelProperty(name = "Cantidad",notes = "Idica la antidad del material", required = true, position = 0 )
+	@ApiModelProperty(name = "Cantidad",notes = "Indica la antidad del material", required = true, position = 0 )
 	private int cantidad;
 	
 	

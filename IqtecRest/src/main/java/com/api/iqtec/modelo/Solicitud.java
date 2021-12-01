@@ -72,7 +72,7 @@ public class Solicitud implements Serializable {
 	private String fechaRecogida;
 	
 	@Column(name = "HORARIO", length = 50)
-	@ApiModelProperty(name = "Horario",notes = "inserta el horario del seguimiento", position = 2)
+	@ApiModelProperty(name = "Horario",notes = "Inserta el horario del seguimiento", position = 2)
 	private String horario;
 	
 	@Column(name = "COMENTARIO_TRANSPORTE")

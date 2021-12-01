@@ -57,7 +57,13 @@ public class AuthController {
     @Autowired ISeguimientoService seguimientoService;
     
     
-    @ApiOperation("Crea un nuevo usuario en la aplicacion.")
+    
+    @ApiOperation(value = "Crear Usuario", notes = "Crea un nuevo usuario en la aplicacion.")
+    @ApiResponses(value = {
+			@ApiResponse(code = 201, message = "Created. El usuario fue insertado correctamente.", response = Usuario.class ),
+			@ApiResponse(code = 400, message = "Bad Request. No se produce la insercion.", response = String.class),
+			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
+			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
     @PostMapping("/nuevo")
     public ResponseEntity<?> nuevo(@Valid @RequestBody NuevoUsuario nuevoUsuario, BindingResult bindingResult){
     	
@@ -84,7 +90,12 @@ public class AuthController {
         return new ResponseEntity<>(usuario, HttpStatus.CREATED);
     }
 
-    @ApiOperation("Si el usuario es valido devuelve un Json Web Token.")
+    @ApiOperation(value = "Valida Usuario", notes = "Si el usuario es valido devuelve un Json Web Token")
+    @ApiResponses(value = {
+    		@ApiResponse(code = 200, message = "OK. El usuario se ha validado.", response = Usuario.class ),
+			@ApiResponse(code = 400, message = "Bad Request. No se produce la validacion.", response = String.class),
+			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
+			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
     @PostMapping("/login")
     public ResponseEntity<JwtDto> login(@Valid @RequestBody LoginUsuario loginUsuario, BindingResult bindingResult){
         
@@ -115,6 +126,12 @@ public class AuthController {
     
     
     @GetMapping("/consultar")
+    @ApiOperation(value = "Consultar Usuarios", notes = "Lista todos los usuarios")
+    @ApiResponses(value = {
+    		@ApiResponse(code = 200, message = "OK. Los usuarios se muestran correctamente.", response = Usuario.class ),
+			@ApiResponse(code = 404, message = "Not Found. No se encuentran los usuarios.", response = String.class),
+			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
+			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
     public ResponseEntity<List<Usuario>>consultar(){
     	
     	ResponseEntity<List<Usuario>> response;
@@ -146,8 +163,8 @@ public class AuthController {
     @DeleteMapping ("/eliminar/{username}")
 	@ApiOperation(value = "Eliminar Usuario", notes = "Elimina un usuario de la base de datos.")
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "OK. El cliente fue borrado correctamente.", response = Cliente.class ),
-			@ApiResponse(code = 404, message = "Not found. No se encuentra el cliente.", response = String.class),
+			@ApiResponse(code = 200, message = "OK. El usuario fue borrado correctamente.", response = Usuario.class ),
+			@ApiResponse(code = 404, message = "Not found. No se encuentra el usuario.", response = String.class),
 			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
 			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
 	public ResponseEntity<String> eliminarUsuario (@PathVariable String username)
