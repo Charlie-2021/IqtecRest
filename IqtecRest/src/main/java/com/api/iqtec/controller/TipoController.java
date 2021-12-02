@@ -26,7 +26,7 @@ public class TipoController {
 	@Autowired ITipoService tipoService;
 	
 	@GetMapping("/consultar")
-	@ApiOperation(value = "Consultar Tipos", notes = "Consulta todos los tipos a la base de datos.")
+	@ApiOperation(value = "Consultar Tipos de Materiales", notes = "Consulta todos los tipos de materiales disponibles a la base de datos.")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "find. Los tipos fueron encontradas correctamente.", response = Tipo.class ),
 			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),

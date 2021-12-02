@@ -173,7 +173,7 @@ public class SolicitudController {
 		return response;
 	}
 	
-		//esta hay que revisarla el swagger
+
 	@PutMapping (value = "/seguimiento", params = {"id","username"})
 	@ApiOperation(value = "Cambio de Estado", notes = "Cambia al siguiente estado la solicitud indicada.")
 	@ApiResponses(value = {
@@ -238,7 +238,7 @@ public class SolicitudController {
 	
 	
 	@PutMapping ("/seguimiento/{id}")
-	@ApiOperation(value = "Actualizar solicitud", notes = "Actualiza pasando el id el estado de una solicitud a la base de datos.")
+	@ApiOperation(value = "Nuevo Seguimiento", notes = "Añade un nuevo seguimiento a una solicitud existente.")
 	@ApiResponses(value = {
 			@ApiResponse(code = 202, message = "Accepted. La solicitud fue modificada correctamente.", response = Solicitud.class ),
 			@ApiResponse(code = 400, message = "Bad Request. No se ha encontrado el id de la solicitud.", response = String.class),

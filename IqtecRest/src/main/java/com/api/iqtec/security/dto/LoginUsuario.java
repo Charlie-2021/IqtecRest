@@ -3,6 +3,8 @@ package com.api.iqtec.security.dto;
 import javax.validation.constraints.NotBlank;
 
 public class LoginUsuario {
+	
+	
     @NotBlank
     private String nombreUsuario;
     @NotBlank

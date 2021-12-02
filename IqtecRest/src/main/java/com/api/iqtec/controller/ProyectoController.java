@@ -19,10 +19,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.api.iqtec.modelo.Cliente;
 import com.api.iqtec.modelo.Proyecto;
-import com.api.iqtec.modelo.Sede;
 import com.api.iqtec.modelo.Solicitud;
 import com.api.iqtec.service.interfaces.IProyectoService;
 import com.api.iqtec.service.interfaces.ISolicitudService;

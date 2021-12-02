@@ -13,17 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.boot.context.properties.bind.DefaultValue;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.AllArgsConstructor;
@@ -66,7 +57,7 @@ public class Cliente implements Serializable{
 	private String razonSocial;
 	
 	@Column(name = "CIF", length = 10)
-	@ApiModelProperty(name="Cif", notes = "Codigo de Identificacion Fiscal del cliente.",required = true, position = 1)
+	@ApiModelProperty(name="CIF", notes = "Codigo de Identificacion Fiscal del cliente.",required = true, position = 1)
 	private String cif;
 	
 	@Embedded

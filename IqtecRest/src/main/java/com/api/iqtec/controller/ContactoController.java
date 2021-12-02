@@ -32,10 +32,10 @@ public class ContactoController {
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping ("/eliminar/{id}")
-	@ApiOperation(value = "Eliminar contacto", notes = "Elimina un cliente pasandole el id a la base de datos.")
+	@ApiOperation(value = "Eliminar contacto", notes = "Elimina un contacto pasandole el id a la base de datos.")
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "OK. El cliente fue borrado correctamente.", response = Cliente.class ),
-			@ApiResponse(code = 404, message = "Not found. No se encuentra el cliente.", response = String.class),
+			@ApiResponse(code = 200, message = "OK. El contacto fue borrado correctamente.", response = Cliente.class ),
+			@ApiResponse(code = 404, message = "Not found. No se encuentra el contacto.", response = String.class),
 			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
 			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
 	public ResponseEntity<Long> eliminarCliente (@PathVariable Long id)

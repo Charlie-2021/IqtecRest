@@ -51,7 +51,7 @@ public class SeguimientoController {
 	
 
 	@PutMapping("/actualizar")
-	@ApiOperation(value = "Actualizar seguimiento", notes = "Actualiza un seguimiento.")
+	@ApiOperation(value = "Añadir Seguimiento", notes = "Añade un nuevo seguimiento a una solicitud.")
 	@ApiResponses(value = {
 			@ApiResponse(code = 202, message = "Accepted. El seguimiento fue modificado correctamente.", response = Seguimiento.class ),
 			@ApiResponse(code = 400, message = "Bad Request. No se ha modificado el seguimiento.", response = String.class),

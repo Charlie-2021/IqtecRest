@@ -11,12 +11,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import com.api.iqtec.modelo.Cliente;
 import com.api.iqtec.modelo.Rol;
 import com.api.iqtec.modelo.Seguimiento;
-import com.api.iqtec.modelo.Solicitud;
-import com.api.iqtec.modelo.Transporte;
 import com.api.iqtec.modelo.Usuario;
 import com.api.iqtec.modelo.enums.RolNombre;
 import com.api.iqtec.security.dto.JwtDto;
@@ -26,12 +22,9 @@ import com.api.iqtec.security.jwt.JwtProvider;
 import com.api.iqtec.service.RolService;
 import com.api.iqtec.service.UsuarioService;
 import com.api.iqtec.service.interfaces.ISeguimientoService;
-import com.api.iqtec.service.interfaces.ISolicitudService;
-
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.List;
@@ -58,7 +51,7 @@ public class AuthController {
     
     
     
-    @ApiOperation(value = "Crear Usuario", notes = "Crea un nuevo usuario en la aplicacion.")
+    @ApiOperation(value = "Crear Usuario", notes = "Registra un nuevo usuario en la aplicacion.")
     @ApiResponses(value = {
 			@ApiResponse(code = 201, message = "Created. El usuario fue insertado correctamente.", response = Usuario.class ),
 			@ApiResponse(code = 400, message = "Bad Request. No se produce la insercion.", response = String.class),
@@ -90,17 +83,14 @@ public class AuthController {
         return new ResponseEntity<>(usuario, HttpStatus.CREATED);
     }
 
-    @ApiOperation(value = "Valida Usuario", notes = "Si el usuario es valido devuelve un Json Web Token")
+    @ApiOperation(value = "Login", notes = "Comprueba la existencia del usuario y le genera un token de autentificación." )
     @ApiResponses(value = {
-    		@ApiResponse(code = 200, message = "OK. El usuario se ha validado.", response = Usuario.class ),
-			@ApiResponse(code = 400, message = "Bad Request. No se produce la validacion.", response = String.class),
+    		@ApiResponse(code = 200, message = "OK. El usuario exite y el token es generado con exito.", response = JwtDto.class ),
+			@ApiResponse(code = 400, message = "Bad Request. El usuario no esta dado de alta en el sistema.", response = String.class),
 			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
 			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
     @PostMapping("/login")
     public ResponseEntity<JwtDto> login(@Valid @RequestBody LoginUsuario loginUsuario, BindingResult bindingResult){
-        
-    	
-    	
     	
     	if(bindingResult.hasErrors())
             return new ResponseEntity("ERROR", HttpStatus.BAD_REQUEST);
@@ -126,7 +116,7 @@ public class AuthController {
     
     
     @GetMapping("/consultar")
-    @ApiOperation(value = "Consultar Usuarios", notes = "Lista todos los usuarios")
+    @ApiOperation(value = "Consultar Usuarios", notes = "Devuelve un listado con todos los usuarios de la aplicación.")
     @ApiResponses(value = {
     		@ApiResponse(code = 200, message = "OK. Los usuarios se muestran correctamente.", response = Usuario.class ),
 			@ApiResponse(code = 404, message = "Not Found. No se encuentran los usuarios.", response = String.class),
@@ -139,11 +129,15 @@ public class AuthController {
 		
 		
 		todos = usuarioService.findAll();
-		System.out.println(todos.toString());
 		return new ResponseEntity<>(todos,HttpStatus.OK);
     }
 
     @GetMapping("/nombre/{nombre}")
+    @ApiOperation(value = "Obtener por Nombre", notes = "Obtiene a un usuario a traves de el nombre.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "OK. El usuario es recuperado de la base de datos", response = Usuario.class ),
+			@ApiResponse(code = 404, message = "Not found. No se encuentra el usuario.", response = String.class),
+			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema.")})
     public ResponseEntity<?>getByNombreUsuario(@PathVariable String nombre){
     	ResponseEntity<?> response;
 		
@@ -167,7 +161,7 @@ public class AuthController {
 			@ApiResponse(code = 404, message = "Not found. No se encuentra el usuario.", response = String.class),
 			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
 			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
-	public ResponseEntity<String> eliminarUsuario (@PathVariable String username)
+	public ResponseEntity<?> eliminarUsuario (@PathVariable String username)
 	{
     	
     	Optional<Usuario> op = usuarioService.getByNombreUsuario(username);

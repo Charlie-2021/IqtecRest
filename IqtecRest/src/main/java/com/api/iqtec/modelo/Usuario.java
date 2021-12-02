@@ -33,12 +33,12 @@ public class Usuario {
     
     @NotNull
     @Column(unique = true)
-	@ApiModelProperty(name = "Nombre",notes = "Nombre del usuario",required = true, position = 0 )
+	@ApiModelProperty(name = "nombreUsuario",notes = "Nombre del usuario",required = true, position = 0 )
     private String nombreUsuario;
 
     
     @NotNull
-    @ApiModelProperty(name = "Password",notes = "Indica el password",required = true, position = 1 )
+    @ApiModelProperty(name = "password",notes = "Indica el password",required = true, position = 1 )
     private String password;
     
     @NotNull

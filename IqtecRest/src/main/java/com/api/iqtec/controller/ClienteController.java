@@ -1,19 +1,12 @@
 package com.api.iqtec.controller;
 
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +20,6 @@ import com.api.iqtec.modelo.Cliente;
 import com.api.iqtec.modelo.Proyecto;
 import com.api.iqtec.modelo.Sede;
 import com.api.iqtec.modelo.Solicitud;
-import com.api.iqtec.modelo.Usuario;
 import com.api.iqtec.service.interfaces.IClienteService;
 import com.api.iqtec.service.interfaces.IProyectoService;
 import com.api.iqtec.service.interfaces.ISedeService;
@@ -159,7 +151,7 @@ public class ClienteController {
 	}
 	
 	@GetMapping("/nombre/{nombre}")
-	@ApiOperation(value = "Buscar cliente", notes = "Busca un cliente pasandole el nombre a la base de datos.")
+	@ApiOperation(value = "Buscar por nombre de cliente", notes = "Busca un cliente pasandole el nombre a la base de datos.")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Find. El cliente fue encontrado correctamente.", response = Cliente.class ),
 			@ApiResponse(code = 404, message = "Not found. No se encuentra el cliente.", response = String.class),
