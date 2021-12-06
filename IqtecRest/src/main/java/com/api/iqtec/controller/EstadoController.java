@@ -20,7 +20,7 @@ import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/Iqtec/estado")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 public class EstadoController {
 	
 @Autowired IEstadoService estadoService;

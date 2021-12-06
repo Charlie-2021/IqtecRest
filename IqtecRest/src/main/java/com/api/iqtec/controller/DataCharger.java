@@ -55,9 +55,9 @@ import io.swagger.annotations.ApiResponses;
 import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RequestMapping("/data")
-@ApiIgnore
+//@ApiIgnore
 public class DataCharger {
 
 	@Autowired IClienteService clienteService;
@@ -81,6 +81,12 @@ public class DataCharger {
 	@Autowired IEstadoService estadoService;
 	
 	@PostMapping("/crear")
+	@ApiOperation(value = "Cargar datos", notes = "Agregar datos a la base de datos.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = "CREATED. Los datos fueron creados correctamente.", response = String.class ),
+			@ApiResponse(code = 404, message = "NOT FOUND. No se encuentran los datos.", response = String.class),
+			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
+			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
 	public ResponseEntity<String> datos (){
 
 

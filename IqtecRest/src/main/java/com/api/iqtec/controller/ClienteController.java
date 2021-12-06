@@ -28,7 +28,7 @@ import com.api.iqtec.service.interfaces.ISolicitudService;
 import io.swagger.annotations.*;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RequestMapping("/Iqtec/clientes")
 public class ClienteController {
 
