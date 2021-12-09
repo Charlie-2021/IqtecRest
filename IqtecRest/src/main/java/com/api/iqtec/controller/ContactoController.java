@@ -25,7 +25,7 @@ import io.swagger.annotations.ApiResponses;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/Iqtec/contactos")
+@RequestMapping("/contactos")
 public class ContactoController {
 
 	@Autowired IContactoService contactoService;

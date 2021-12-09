@@ -19,7 +19,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
-@RequestMapping("/Iqtec/estado")
+@RequestMapping("/estado")
 @CrossOrigin(origins = "*")
 public class EstadoController {
 	

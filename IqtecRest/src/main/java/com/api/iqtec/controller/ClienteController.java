@@ -29,7 +29,7 @@ import io.swagger.annotations.*;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/Iqtec/clientes")
+@RequestMapping("/clientes")
 public class ClienteController {
 
 	@Autowired IClienteService clienteService;

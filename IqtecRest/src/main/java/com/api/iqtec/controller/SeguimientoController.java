@@ -23,7 +23,7 @@ import io.swagger.annotations.ApiResponses;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/Iqtec/seguimiento")
+@RequestMapping("/seguimiento")
 public class SeguimientoController {
 	
 

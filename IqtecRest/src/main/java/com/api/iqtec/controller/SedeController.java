@@ -30,7 +30,7 @@ import io.swagger.annotations.ApiResponses;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/Iqtec/sedes")
+@RequestMapping("/sedes")
 public class SedeController {
 
 	@Autowired ISedeService sedeService;

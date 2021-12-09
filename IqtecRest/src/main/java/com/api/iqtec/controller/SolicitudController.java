@@ -40,7 +40,7 @@ import io.swagger.annotations.ApiResponses;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/Iqtec/solicitud")
+@RequestMapping("/solicitud")
 public class SolicitudController {
 	
 	@Autowired ISolicitudService solicitudService;
@@ -65,12 +65,6 @@ public class SolicitudController {
 		Usuario usuario = userService.getByNombreUsuario(solicitud.getSeguimientos().get(0).getUsuario().getNombreUsuario()).get();
 		
 		solicitud.getSeguimientos().get(0).setUsuario(usuario);
-		
-		if (solicitud.getProyecto().getIdProyecto() == -1) {
-			solicitud.setProyecto(null);
-		}
-		
-		System.out.println(solicitud);
 		
 		
 		if (!solicitudService.insert(solicitud))
@@ -174,24 +168,21 @@ public class SolicitudController {
 	}
 	
 
-	@PutMapping (value = "/seguimiento", params = {"id","username"})
+	@PutMapping (value = "/estado/{username}")
 	@ApiOperation(value = "Cambio de Estado", notes = "Cambia al siguiente estado la solicitud indicada.")
 	@ApiResponses(value = {
 			@ApiResponse(code = 202, message = "Accepted. La solicitud fue modificada correctamente.", response = Solicitud.class ),
 			@ApiResponse(code = 400, message = "Bad Request. No se ha encontrado el id de la solicitud.", response = String.class),
 			@ApiResponse(code = 500, message = "Internal Server Error. Error inesperado del sistema."),
 			@ApiResponse(code = 401, message = "Unauthorize. El usuario no posee los permisos para realizar la operación." )})
-	public ResponseEntity<?> cambioEstado (@RequestParam Long id, @RequestParam String username)
+	public ResponseEntity<?> cambioEstado (@PathVariable String username, @Valid @RequestBody Solicitud solicitud)
 	{
-		Optional<Solicitud> opSolicitud = solicitudService.findById(id);
-		Solicitud solicitud = null;
+		
 		
 		HttpStatus status = HttpStatus.ACCEPTED;
 		
-		if (opSolicitud.isEmpty()) {
-			status = HttpStatus.BAD_REQUEST;
-		} else {
-			solicitud = opSolicitud.get();
+		
+			
 			Usuario usuario = userService.getByNombreUsuario(username).get();
 			Estado estado;
 			Seguimiento seguimiento = Seguimiento.builder()
@@ -231,7 +222,7 @@ public class SolicitudController {
 			if (!solicitudService.update(solicitud))
 				status = HttpStatus.BAD_REQUEST;
 			
-		}
+		
 
 		return new ResponseEntity<Solicitud>(solicitud,status);
 	}
